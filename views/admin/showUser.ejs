@@ -1,0 +1,48 @@
+<%- include("../partials/admin-navbar.ejs") %>
+<br>
+<div class="card" >
+<h5 class="card-header"><strong>Show Users</strong></h5>
+<div class="table-responsive text-nowrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Index</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <% users.forEach(function(users){ %>
+        <tr>
+      
+          <td> <%= index++ %></td>
+          <td> <%= users.name %></td>
+          <td> <%= users.email %></td>
+          <td> <%= users.status %></td>
+
+          <td>
+                <% if (users.status=="Blocked" ) { %>
+                  <form action="/admin/unblockUser/<%= users._id %> " method="post">
+                    <button type="submit" class="btn btn-success"  onclick="alert('Are you sure you want to UnBlock?')"> UnBlock</button>
+                  </form>
+                  <% } else { %>
+                    <form action="/admin/blockUser/<%= users._id %> " method="post">
+                      <button type="submit" class="btn btn-danger" onclick="alert('You want to Block the user?')">
+                        Block</button>
+                    </form>
+                  <% } %>
+              </td>
+
+         
+
+        </tr>
+        <% }) %>
+       
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+<%- include("../partials/admin-footer.ejs") %>

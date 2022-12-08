@@ -1,0 +1,116 @@
+<%- include("../partials/admin-navbar.ejs") %>
+
+<button type="button" class="btn btn-primary col-2 mt-3 " data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" style="margin-left: 880px;">Add Coupon</button>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Coupon</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/admin/add-coupon" enctype="">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Couon Name:</label>
+            <input type="text" name="name" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Coupon Code:</label>
+            <input type="text" name="code" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Discount:</label>
+            <input type="text" name="discount" class="form-control" id="recipient-name">
+          </div>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add Coupon</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="card" >
+<h5 class="card-header"><strong>Show Coupons</strong></h5>
+<div class="table-responsive text-nowrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Index</th>
+          <th>Coupon Name</th>
+          <th>Coupon Code</th>
+          <th>Discount</th>
+      
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <% coupon.forEach(function(x) { %>
+          <tr>
+            <td><%= index++%></td>
+            <td><i class="fab fa-angular fa-lg text-danger me-3"></i><strong><%= x.name %></strong></td>
+            <td><%= x.code %></td>
+            <td><%= x.discount %></td>
+
+            <td>
+              
+              <button type="button" class="btn btn-secondary" style="width: 100px; height:35px;" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-bs-whatever="@mdo" >Edit</button> 
+               
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel1">Edit Banner</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="/admin/add-banner" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Couon Name:</label>
+                <input type="text" name="name" class="form-control" id="recipient-name">
+              </div>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Coupon Code:</label>
+                <input type="text" name="code" class="form-control" id="recipient-name">
+              </div>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Discount:</label>
+                <input type="text" name="discount" class="form-control" id="recipient-name">
+              </div>
+              
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+           
+ 
+            
+               <form action="/admin/deleteBanner/<%=x._id %>" method="post" enctype="multipart/form-data">
+              <button type="submit" class="btn btn-danger" style="width: 100px; height:35px;">Delete</button> 
+            </form>
+              
+            </td>
+            
+  
+          </tr>
+          <% }) %>
+          
+         
+        
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+  
+
+<%- include("../partials/admin-footer.ejs") %>

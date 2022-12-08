@@ -1,0 +1,78 @@
+<%- include("../layouts/admin-layout.ejs") %>
+<section >
+    <div class="container-fluid">
+       <div class="row no-gutter">
+           <!-- The image half -->
+           <div class="col-md-6 d-none d-md-flex bg-image"></div>
+
+
+           <!-- The content half -->
+           <div class="col-md-6 bg-light">
+               <div class="login d-flex align-items-center py-5">
+
+                   <!-- Demo content-->
+                   <div class="container">
+                       <div class="row">
+                           <div class="col-lg-10 col-xl-7 mx-auto">
+                               <h3 class="display-4" >Admin  </h3>
+                               <p class="text-muted mb-4">LOGIN | ADMIN ONLY</p>
+                               <form action="/admin" method="post">
+                                   <div class="form-group mb-3">
+                                       <input id="inputEmail" type="email" placeholder="Email address" required=""
+                                           autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4" name="email">
+                                   </div>
+                                   <div class="form-group mb-3">
+                                       <input id="inputPassword" type="password" placeholder="Password" required=""
+                                           class="form-control rounded-pill border-0 shadow-sm px-4 text-primary" name="password">
+                                   </div>
+                                   <div class="custom-control custom-checkbox mb-3">
+                                       <input id="customCheck1" type="checkbox" checked class="custom-control-input">
+                                       <label for="customCheck1" class="custom-control-label">Remember password</label>
+                                   </div>
+                                  
+                                   
+                                   
+                                   <button type="submit"
+                                       class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">Log
+                                       in</button>
+                                                   <!-- <div class="text-center d-flex justify-content-between mt-4">
+                                       <p>Don't Have An Account ! <a href="/admin/admin-signup"
+                                               class="font-italic text-muted">
+                                               <u>SignUp</u></a></p>
+                                   </div> 
+                               </form>
+                                  <button type="submit"
+                                       class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">Sign
+                                       Up</button>  -->
+                                    
+                           </div>
+                       </div>
+                   </div><!-- End -->
+
+               </div>
+           </div><!-- End -->
+
+       </div>
+   </div>
+
+</section>
+<style>
+  .login,
+.image {
+ min-height: 100vh;
+}
+
+.bg-image {
+ background-image: url('https://cdn.dribbble.com/users/3639405/screenshots/7400140/media/53fa0711dd8126520d614ef72ab02ea3.jpg?compress=1&resize=1000x750&vertical=top');
+ background-size: contain;
+ background-position: center center;
+
+
+}
+
+   @media (max-width: 450px) {
+       .h-custom {
+           height: 100%;
+       }
+   }
+</style>

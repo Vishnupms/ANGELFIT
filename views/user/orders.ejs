@@ -1,0 +1,158 @@
+<%- include("../partials/userHeader.ejs") %>
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 300px">
+            <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">My Orders</h4>
+            <div class="d-inline-flex">
+                <p class="m-0 text-white"><a class="text-white" href="">Home</a></p>
+                <p class="m-0 text-white px-2">/</p>
+                <p class="m-0 text-white">My Orders</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+    <div>
+<div class="main">
+    <div class="content-wrapper  justify-content-center">
+        <section class="container">
+            <div class="container my-5">
+                <div class="row" id="orderCard">
+                    <% orders.forEach(function(order){ %>
+                        <% order.products.forEach(function(product){ %>
+                            <div class="card mb-3">
+                                <div class="row g-0">
+                                    <div class="col-5 col-md-2">
+                                        <img class="card-img card-img-left"
+                                            src="/<%= product.productId.image %>" alt="Card image"
+                                            style="height: 212px; width: 173px; object-fit: cover" />
+                                    </div>
+                                    <br>
+                                    <div class="col-6 col-md-4">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <%= product.productId.name %>
+                                            </h5>
+                                            <strong class="card-text">Price : <%= product.productId.price %>
+                                            </strong><br />
+                                            <strong class="card-text">Qty : <%= product.quantity %>
+                                            </strong><br />
+                                            <strong class="card-text">Total : <%= product.total %>
+                                            </strong>
+                                            <p class="card-text">PAYMENT: <%= order.payment_method %>
+                                            </p>
+                                            <% if(order.orderStatus !='OrderPlaced' ){ %>
+                                                <p class="card-text">
+                                                    <small class="text-muted">
+                                                        <%= order.orderStatus %> At :
+                                                            <%=moment(product.productId.date).format("LL") %>
+                                                    </small>
+                                                </p>
+                                                <% } %>
+                                                    <% if(order.orderStatus !="Cancelled" && order.orderStatus
+                                                        !="Delivered" ){ %>
+                                                        <p class="card-text">
+                                                            <small class="text-muted">Expected delivery Date :
+                                                                <%=moment(product.productId.date).format("LL")
+                                                                    %>
+                                                            </small>
+                                                        </p>
+                                                        <% } %>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="col-md-4 m-2 d-flex align-items-center justify-content-center  ">
+                                        <strong>Order status : </strong>
+                                        <% if(product.orderStatus=="Packed" ){ %>
+                                            <span class="badge badge-secondary me-1">Packed</span>
+                                            <% }else if(product.orderStatus=="Shipped" ){ %>
+                                                <span class="badge badge-info me-1">Shipped</span>
+                                                <% }else if(product.orderStatus=="Delivered" ){ %>
+                                                    <span class="badge badge-success me-1">Delivered</span>
+                                                    <% }else if(product.orderStatus=="Cancelled" ){ %>
+                                                        <span class="badge badge-danger me-1">Cancelled</span>
+                                                        <% }else{ %>
+                                                            <span class="badge badge-danger me-1">pending</span>
+                                                            <% } %>
+                                    </div>
+                                    <div class="col-md-1 d-flex align-items-center justify-content-center-2">
+                                        <% if(product.orderStatus=="Delivered" ) {%>
+                                            <a href="#"><button class="btn btn-outline-info m-2"
+                                                    onclick="Delivered()">
+                                                    Cancel
+                                                    </button></a>
+                                            <div><a href="/userInvoice/<%= order._id %>/<%= product._id %>"><button class="btn btn-outline-success m-2">bill</button></a></div> 
+                                            <% }else if (product.orderStatus=="Cancelled" ){ %>
+                                                <a href="#"><button class="btn btn-outline-info m-2 "
+                                                        onclick="Cancelled()">
+                                                        Cancel
+                                                    </button></a>
+                                                <%} else{%>
+                                                    <a href="/orderCancel/<%= order._id %>/<%= product._id %>"><button
+                                                            class="btn btn-outline-info" onclick="Cancel()">
+                                                            Cancel
+                                                        </button></a>
+                                                    <% }%>
+                                                    
+                                                    
+                                                    </div>
+                                </div>
+                                <div class="  active progress  " style="margin-bottom: 14px;">
+                                    <% if(product.orderStatus=="Packed" ){ %>
+                                        <div class="progress-bar-striped bg-success" style="width:30%">
+                                            packed
+                                        </div>
+                                        <%}else if(product.orderStatus=="Shipped" ) {%>
+                                            <div class="progress-bar-striped bg-info" style="width:60%">
+                                                shipped
+                                            </div>
+                                            <%}else if(product.orderStatus=="Delivered" ) {%>
+                                                <div class="progress-bar bg-success" style="width:1000%">
+                                                    Delivered
+                                                </div>
+                                                <%}else if(product.orderStatus=="Cancelled" ) {%>
+                                                    <div class="progress-bar bg-danger" style="width:100%">
+                                                        Cancelled
+                                                    </div>
+                                                    <%}else{%>
+                                                        <div class="progress-bar-striped bg-warning"
+                                                            style="width:10%">
+                                                            waiting
+                                                        </div>
+                                                        <% } %>
+                                </div>
+                            </div>
+                            <% }) %>
+                                <% }) %>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</div>
+
+   <script>
+                function Delivered() {
+                    Swal.fire({
+                        icon: "error",
+                        title: "PRODUCT Delivered",
+                        text: " oops...",
+                    });
+                }
+                function Cancelled() {
+                    Swal.fire({
+                        icon: "error",
+                        title: "oops...",
+                        text: "order has been Cancelled!",
+                    });
+                }
+                function Cancel() {
+                    Swal.fire({
+                        icon: "success",
+                        title: "order Cancel..",
+                        text: "order Cancelled successfully ",
+                    });
+                }
+            </script>
+
+    <%- include("../partials/userFooter.ejs") %>

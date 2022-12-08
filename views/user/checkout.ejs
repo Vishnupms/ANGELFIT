@@ -1,0 +1,406 @@
+<%- include("../partials/userHeader.ejs") %>
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 300px">
+            <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">Checkout</h4>
+            <div class="d-inline-flex">
+                <p class="m-0 text-white"><a class="text-white" href="">Home</a></p>
+                <p class="m-0 text-white px-2">/</p>
+                <p class="m-0 text-white">My Cart</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+    <div class="container">
+        <div class="row">
+          <div class="col-md-8 order-md-1">
+            <% if(address !=0){ %>
+            <table class="table table-bordered table-lg m-0">
+                <thead class="bg-secondary text-white text-center">
+                    <tr class="table_head">
+                        <th class="column-1">Billing Address</th>
+                        <button class="btn text-primary" data-toggle="collapse"
+											data-target="#collapseExample" aria-expanded="false"
+											aria-controls="collapseExample">
+											<h6 class="text-info">Change</h6>
+										</button>
+                     
+                   
+                    </tr>
+                </thead>
+                <tbody class="align-items-center">
+                   
+           
+								<tr class="table_row">
+									<td class="column-1">
+										&nbsp;<strong>Name : </strong>
+											<%=address[index].fullName %><br>
+										
+                                            &nbsp;<strong>House Name : </strong>
+											<%=address[index].houseName%><br>
+										
+                                            &nbsp;<strong>City : </strong>
+											<%=address[index].city %><br>
+										
+                                            &nbsp;<strong>State : </strong>
+											<%=address[index].state %><br>
+										
+                                            &nbsp;<strong>Pincode : </strong>
+											<%=address[index].pincode %><br>
+										
+                                            &nbsp;<strong>Phone Number : </strong>
+											<%=address[index].phone %><br>
+									
+									</td>
+								</tr>
+                
+                </tbody>
+            </table>
+            <%}else{%>
+                <h4 class="text-center"> No delivery address is added...! </h4>
+            </table>
+            
+        </tr>
+        
+        <%}%>
+            <div class="collapse" id="collapseExample">
+                <form action="/checkout" method="post">
+                 
+                        <% address.forEach(function(address,index){ %>
+                            <div class="form-check card card-body">
+                                <input class="form-check-input" type="radio" value="<%= index%>"
+                                    name="index" id="exampleRadios1" />
+                                <label class="form-check-label" for="exampleRadios1" style="margin-left: 5px;">
+                                    
+                                        <strong>Name :<%= index %></strong>
+                                        <%= address.fullName %> <br>
+                                    
+                                    
+                                        <strong>house Name :</strong>
+                                        <%= address.houseName %><br>
+                                    
+                                
+                                        <strong>City :</strong>
+                                        <%= address.city %><br>
+                                    
+                                    
+                                        <strong>State :</strong>
+                                        <%= address.state %><br>
+                                    
+                                    
+                                        <strong>Pincode :</strong>
+                                        <%= address.pincode %><br>
+                                    
+                                
+                                        <strong>Phone Number :</strong>
+                                        <%= address.phone %><br>
+                                    
+                                </label>
+                            </div>
+                            <% }) %>
+                                <button type="submit"
+                                    class="btn btn-info " style="color: rgb(242, 242, 243);">
+                                    Deliver Here
+                                </button>
+                
+                </form>
+            </div>
+            <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
+             <br>
+
+                <button class="btn btn-block" type="button" data-toggle="collapse" data-target="#newAddress"
+                    aria-expanded="false" aria-controls="newAddress">
+                    <div
+                        class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
+                        Add New Address
+                    </div>
+                </button>
+                <br><br><br>
+                <div class="collapse" id="newAddress">
+                    <br>
+                    <form action="/checkOutnewAddress" class="mb-0" method="post">
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="form-outline">
+                                    <input type="text" id="form9Example1" name="fullName"
+                                        class="form-control input-custom" />
+                                    <label class="form-label" for="form9Example1">Full name</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-outline">
+                                    <input type="text" id="form9Example2" name="houseName"
+                                        class="form-control input-custom" />
+                                    <label class="form-label" for="form9Example2">House name / Office
+                                        name</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="form-outline">
+                                    <input type="text" id="form9Example3" name="city"
+                                        class="form-control input-custom" />
+                                    <label class="form-label" for="form9Example3">City</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-outline">
+                                    <input type="text" id="form9Example4" name="state"
+                                        class="form-control input-custom" />
+                                    <label class="form-label" for="form9Example4">State</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="form-outline">
+                                    <input type="number" id="form9Example6" name="pincode"
+                                        class="form-control input-custom" />
+                                    <label class="form-label" for="form9Example6">Pincode</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-outline">
+                                    <input type="number" id="typeEmail" name="phone"
+                                        class="form-control input-custom" />
+                                    <label class="form-label" for="typeEmail">Phone</label>
+                                </div>
+                            </div>
+
+
+                            <div class="float-end">
+                                <!-- Submit button -->
+                                <button type="submit" class="btn btn-primary btn    "
+                                    style="background-color: #0062cc">
+                                    Deliver Here
+                                </button>
+                            </div>
+                    </form>
+                </div>
+
+
+
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-4 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-muted"> Your Orders</span>
+              <span class="badge badge-secondary badge-pill">3</span>
+            </h4>
+            <% cartItems.forEach(function(product){ %> 
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <div>
+                    <h6><img
+					src="/<%=product.productId.image %>"
+					alt=""
+					style="width: 60px"
+				  />&nbsp;&nbsp;<%= product.productId.name %></h6>
+                  <small class="text-muted">Quantity : <%= product.quantity %></small>
+                </div>
+                <span class="text-muted"><br><br><i class="fa fa-inr"></i> <%= product.total %></span>
+              </li>
+              <% }) %>
+            
+              <li class="list-group-item d-flex justify-content-between">
+                <span>  Sub Total:</span>
+                <strong><i class="fa fa-inr"></i> <%= cartTotal %> </strong>
+              </li>
+            </ul>
+      
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Promo code" id="codeInput">
+                <div class="input-group-append">
+                  <button onclick="getcoupon(' <%= cartTotal %>')" class="btn btn-secondary">Redeem</button>
+                </div>
+              </div><br>
+           
+           
+                <div class="form-check" >
+					<input class="form-check-input"
+					type="radio"
+					name="paymentMethod"
+					id="paynow"
+					value="Razorpay"
+					checked
+					/>
+					<label class="form-check-label" for="paynow">Razorpay</label>
+				</div>
+                <div class="form-check">
+					<input class="form-check-input"
+					type="radio"
+					name="paymentMethod"
+					id="cod"
+					value="COD"
+					/>
+					<label class="form-check-label" for="paynow">Cash On Delivery</label>
+				</div>
+                <br>
+                <% if(address !=0) {%>
+					<button 
+                    type="button"
+					 onclick="placeOrder('<%= index %>')"
+                     class="btn btn-success"
+					 >
+				Place Order
+				</button>
+                <% }else{ %>
+					<button 
+                    type="button"
+					onclick="addressError()"
+                    class="btn btn-success"
+                  
+					>
+					Place Order
+				</button>
+				<% } %>
+            
+          </div>
+        
+        </div>
+      
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+          <p class="mb-1">&copy; 2017-2019 AngelFit</p>
+        </footer>
+      </div>
+       <!-- script -->
+       <script>
+       
+        function getcoupon(cartTotal) {
+          const code = document.querySelector("#codeInput").value;
+          $.ajax({
+            url: "/checkCoupon",
+            data: {
+              cartTotal,
+
+              code
+            },
+            method: "post",
+            success: (response) => {
+              if (response.apply) {
+                window.location.reload()
+                Swal.fire({
+                  icon: "success",
+                  title: "Success",
+                  text: "coupon applied",
+                });
+              } else if (response.exist) {
+                
+                Swal.fire({
+                  icon: "error",
+                  title: "Bad luck",
+                  text: "coupon already applied",
+                });
+              } else {
+                
+                Swal.fire({
+                  icon: "error",
+                  title: "Bad luck",
+                  text: "coupon not exist",
+                });
+              }
+            },
+          });
+        }
+     
+  // place order
+  
+	function placeOrder(index){
+		let num = parseInt(index);
+		let paymentMethod = document.getElementById("cod").checked
+		? "COD"
+		: "Razorpay"
+
+		$.ajax({
+			url:"/placeOrder",
+			data:{
+				index:num,
+				paymentMethod:paymentMethod
+				
+			},
+			method:"post",
+			success:(response)=>{
+				if(response.codSuccess){
+					location.href="/orderSuccess";
+				}
+				else{
+					razorpayPayment(response)
+				}
+			}
+		})
+	}
+	
+	function razorpayPayment(order){
+		var options = {
+			key:"rzp_test_tf5Cb2ciSL0AeO", //key id generated from dashbord
+			amount:order.amount, // amount is in currency subunits, default currencyis inr,hence 5000 refes to 5000 paise
+			currency:"INR",
+			name:"AngelFit",
+			description:"Test transaction",
+			image: "https://example.com/your_logo",
+			order_id:order.id,
+			callback_url: "https://eneqd3r9zrjok.x.pipedream.net/",
+		handler: function (response) {
+		alert(response.razorpay_payment_id);
+		alert(response.razorpay_order_id);
+		alert(response.razorpay_signature)
+		verifyPayment(response, order);
+
+	},
+	  prefill: {
+		name: "vishnu",
+		email: "vishnupms1998@gmail.com",
+		contact: "9656857573",
+	  },
+	  notes: {
+		address: "Razorpay Corporate Office",
+	  },
+	  theme: {
+		color: "#7c7efc",
+	  },
+	};
+	var rzp1 = new Razorpay(options);
+	rzp1.open();
+  }
+
+  function verifyPayment(payment, order){
+	$.ajax({
+		url:"/verifyPayment",
+		data:{
+			payment,
+			order,
+		},
+		method:"post",
+		success:(response)=>{
+			if (response.status){
+				location.href ="/orderSuccess"
+			}
+			else{
+				swal.fire({
+					icon:"error",
+					title:"oops",
+					text:"Payment Failed"
+				})
+			}
+		}
+	})
+
+
+  }
+
+
+	function addressError(){
+		swal.fire({
+			icon:"error",
+			title:"oops...",
+			text:"address Not Added"
+		});
+	}
+  </script>
+  
+ 
+
+    <%- include("../partials/userFooter.ejs") %>

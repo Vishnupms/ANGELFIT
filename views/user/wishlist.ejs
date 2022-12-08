@@ -1,0 +1,59 @@
+<%- include("../partials/userHeader.ejs") %>
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 300px">
+            <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">My WishList</h4>
+            <div class="d-inline-flex">
+                <p class="m-0 text-white"><a class="text-white" href="">Home</a></p>
+                <p class="m-0 text-white px-2">/</p>
+                <p class="m-0 text-white">My Wishlist</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+    <!-- if wishlist is empty -->
+    <% if(list.length==0){ %>
+        <div class="text-center">
+          <img src="/public/user/img/empty-wishlist.gif" alt="">
+          <h4>Your wishlist is empty !..</h4><a href="/home"><button class="btn btn-secondary ">Shop Now</button></a>
+        </div>
+
+        <% }else{ %>
+
+<div class="tab-content">
+    <div id="class-all" class="container tab-pane p-0 active">
+        <div class="table-responsive">
+            <table class="table table-bordered table-lg m-0">
+                <thead class="bg-secondary text-white text-center">
+                    <tr class="table_head">
+                        <th class="bg-white" style=" border: 0;"></th>
+                        <th class="column-1">Product</th>
+                        <th class="column-2">Price</th>
+                        <th class="column-4">Status</th>
+                       
+                    </tr>
+                </thead>
+                <tbody class="align-items-center">
+                    <% list.map(function(x){ %>
+                    <tr>
+                        <td style="width: 1cm; border: 0; align-content: center;"><a href="/removeWishList/<%= x._id %>"> <i class="fa fa-close" style="color: black;"></i> </button></a></td>
+                        <td ><img src="/<%= x.image %>"  alt="IMG" style="width: 70px; height: 70px;">&nbsp;&nbsp;<%= x.name %></td>
+                        <td > <i class="fa fa-inr"></i>  <%= x.price %></td>
+                        <td >In-stock</td>
+                        <td style=" border: 0; align-content: center;"><form action="/moveToCart/<%=x.id %>" method="post"><button class="btn btn-secondary cart-button px-2 " type="submit"><i class="fa fa-shopping-cart"></i> </button></form></td>
+                        
+
+                   
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<% } %>
+
+
+
+<%- include("../partials/userFooter.ejs") %>

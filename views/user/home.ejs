@@ -1,0 +1,271 @@
+
+<%- include("../partials/userHeader.ejs") %>
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0">
+        <div id="blog-carousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="w-100" src="/public/user/img/carousel-1.jpg" alt="Image">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <h3 class="display-2 m-0 mt-2 mt-md-4 text-white font-weight-bold text-capitalize">New Arrivals</h3>
+                        
+
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="w-100" src="/public/user/img/ctrl-a-meal-replacement-03e4RajfFAE-unsplash.jpg" alt="Image">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <h2 class="display-2 m-0 mt-2 mt-md-4 text-white font-weight-bold text-capitalize">Whey protien collections</h2>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#blog-carousel" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#blog-carousel" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+    </div>
+    <!-- Carousel End -->
+        <div class="container-fluid my-5">
+            <div class="d-flex flex-column text-center mb-5">
+               
+                <h4 class="display-4 font-weight-bold">Shop By your Goal</h4>
+            </div>
+        <div class="row">
+            <div class="col-lg-4 p-0">
+                <div class="d-flex align-items-center bg-secondary text-white px-5" style="min-height: 300px;">
+                    <i class="flaticon-training display-3 text-primary mr-3"></i>
+                    <div class="">
+                        <h2 class="text-white mb-3">Cardio</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu suscipit orci velit id libero
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 p-0">
+                <div class="d-flex align-items-center bg-primary text-white px-5" style="min-height: 300px;">
+                    <i class="flaticon-weightlifting display-3 text-secondary mr-3"></i>
+                    <div class="">
+                        <h2 class="text-white mb-3">Crossfit</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu suscipit orci velit id libero
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 p-0">
+                <div class="d-flex align-items-center bg-secondary text-white px-5" style="min-height: 300px;">
+                    <i class="flaticon-treadmill display-3 text-primary mr-3"></i>
+                    <div class="">
+                        <h2 class="text-white mb-3">PowerLift</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu suscipit orci velit id libero
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Gym Class Start -->
+    <div class="container pt-5 team">
+        <div class="d-flex flex-column text-center mb-5">
+        
+            <h4 class="display-4 font-weight-bold">All products</h4>
+			<br>
+			<ul class="nav nav-pills justify-content-center mb-4">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="pill" href="#class-all">All Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#class-cardio">Cardio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#class-crossfit">Crossfit</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#class-powerlifting">Powerlifting</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <% products.forEach(function(x) { %>
+                <% if(x.status == "listed") { %>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <div class="card border-0 bg-secondary text-center text-white">
+                    <img class="card-img-top" src="/<%= x.image %>" alt="" style="height:280px;">
+                    <div class="card-social d-flex align-items-center justify-content-center">
+                        <button onclick ="addtowishlist('<%= x._id %>','<%=x.name%>')" class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;"><i class="fa fa-heart"></i></button>
+                        <a onclick="addtocart('<%= x._id%>')" class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;"><i class="fas fa-shopping-cart"></i></a>
+ 
+                    </div>
+                    <div class="card-body bg-dark" style=" height: 70px;">  
+                        <a href="/product-details/<%= x._id %>" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6 text-white text-decoration-none">
+                            <%= x.name %> 
+                        </a>
+                        <div>
+                        <span class="stext-105 cl3 text-primary">
+                            Rs : <%= x.price %>
+                        </span>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            <% }) %>
+            <div class="text-primary font-weight-bold ">
+				<a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
+					Load More
+				</a>
+			</div>
+
+    </div>
+    </div>
+
+
+    <!-- About Start -->
+
+
+
+    <!-- Features Start -->
+
+    <!-- Features End -->
+
+
+    <!-- GYM Feature Start -->
+
+    <!-- GYM Feature End -->
+
+
+    <!-- Subscribe Start -->
+
+
+
+    
+    <!-- Class Timetable End -->
+
+
+    <!-- BMI Calculation Start -->
+    <div class="container-fluid position-relative bmi my-5">
+        <div class="container">
+            <div class="row px-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="pr-md-3 d-none d-md-block">
+                        <h4 class="text-primary">Body Mass Index </h4>
+                        <h4 class="display-4 text-white font-weight-bold mb-4">What is BMI?</h4>
+                        <p class="m-0 text-white">Vero elitr lorem magna justo magna justo at justo est ipsum sed clita lorem dolor ipsum sed. Lorem sea lorem vero. Sanct dolor clita clita rebum kasd magna erat diam</p>
+                    </div>
+                </div>
+                <div class="col-md-6 bg-secondary py-5">
+                    <div class="py-5 px-3">
+                        <h1 class="mb-4 text-white">Calculate your BMI</h1>
+                        <form id="bmiform">
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <input required name="weight" type="text" class="form-control form-control-lg bg-dark text-white" placeholder="Weight (KG)">
+                                </div>
+                                <div class="col form-group">
+                                    <input required  name="height" type="text" class="form-control form-control-lg bg-dark text-white" placeholder="Height (CM)">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <input  name="age" type="text" class="form-control form-control-lg bg-dark text-white" placeholder="Age">
+                                </div>
+                                <div class="col form-group">
+                                    <select class="custom-select custom-select-lg bg-dark text-muted">
+                                        <option>Gender</option>
+                                        <option>Mal</option>
+                                        <option>Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <input  type="submit" class="btn btn-lg btn-block btn-dark border-light"
+                                        value="Calculate Now">
+                                </div>
+                                <h4 class="mt-8 ms-3 text-primary" id="bmi"></h4>
+                                
+                                    <h4 id="normal" style="display: none;">you are normal</h4>
+
+                                    
+                                        <h4 id="ub" style="display: none;">>you are abnormal</h4>
+                                    
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BMI Calculation End -->
+
+
+    <!-- Team Start -->
+
+    <!-- Team End -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script>
+// function calculateBmi(event)
+// {
+//   event.preventDefault()
+//     console.log(e.taget.value);
+
+// }
+//
+
+    function addtocart(productId){
+        $.ajax({
+            url:'/addtocart/' + productId,
+            method:'post',
+            success:(response)=>{
+                if(response.success){
+                    Swal.fire({
+                        icon:'success',
+                        title:'Item Added to Cart!',	
+                        showConfirmButton:false,
+                        timer:1500,
+                    })
+
+                }
+
+            }
+        })
+    }
+
+
+
+$( "#bmiform" ).submit(function( event ) {
+    event.preventDefault();
+//   alert( "Handler for .submit() called." );
+const values= $('#bmiform').serializeArray()
+const weight = parseInt(values[0].value)
+const height=parseInt(values[1].value)/100
+const age =parseInt(values[2].value)
+const bmi=(weight /height **2).toFixed(2)
+if(isNaN(bmi)) return  $('#bmi').html(`please enter valid details`)
+$('#bmi').html(`Your BMI is ${bmi}`)
+
+if(bmi < 18){
+    document.querySelector("#ub").style.display="block";
+    document.querySelector("#normal").style.display="none";
+}else{
+    document.querySelector("#ub").style.display="none";
+    document.querySelector("#normal").style.display="block  ";
+}
+})
+</script>
+
+  
+
+    <!-- Blog Start -->
+
+    <!-- Blog End -->
+
+
+
+   
+<%- include("../partials/userFooter.ejs") %>

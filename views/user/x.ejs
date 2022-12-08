@@ -1,0 +1,80 @@
+<%- include("../partials/userHeader.ejs") %>
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 400px">
+            <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">My Orders</h4>
+            <div class="d-inline-flex">
+                <p class="m-0 text-white"><a class="text-white" href="">Home</a></p>
+                <p class="m-0 text-white px-2">/</p>
+                <p class="m-0 text-white">My Orders</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+  <!-- Class Timetable Start -->
+  <div class="container gym-feature py-5">
+    <div class="d-flex flex-column text-center mb-5">
+
+        <h3><b>Your Orders</b></h3>
+    </div>
+    <div class="tab-class">
+        <div class="tab-content">
+            <div id="class-all" class="container tab-pane p-0 active">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-lg m-0">
+                        <thead class="bg-secondary text-white text-center">
+                            <tr>
+                                <th>Index</th>
+                                <th>Image</th>
+                                <th>Products</th>
+                                <th>OrderStatus</th>
+                                <th>Total Price</th>
+                                <th>Ordered Date</th>
+                                <th>View</th>
+                                <th>Cancel</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <% orders.forEach(function(order){ %>
+                                <% order.products.forEach(function(x){ %>
+                            <tr>
+                                
+                                <td style="width: 1cm;"><%=index++%></td>
+                                <td> <img src="/<%= x.productId.image  %> " style="width:60px;height:60px"></td>
+                                <td><%= x.productId.name  %> </td>
+                                <td>  </td>
+                                <td><%= x.productId.price  %></td>
+                                <td><%= moment(order.date).format("LL")  %></td>
+                                <td></td>
+                            </tr>
+                            <% }) %>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                    <div>
+
+                        <section class="d-flex justify-content-center mt-2">
+                            <% if(hasPreviousPage){ %>
+                              <a style="text-decoration: none;padding: .5rem; margin:0 1rem; color:rgb(223, 54, 54)" class="text-center"
+                                href="/user/orders?page=<%= PreviousPage %>"><i class="fa-solid fa-chevron-left"
+                                  aria-hidden="true"></i></a>
+                              <% } %>
+                                <a style="text-decoration: none;padding: .5rem; margin:0 1rem; color:black; border: 1px solid black;"
+                                  href="/user/orders?page=<%= page %>">
+                                  <%= page %>
+                                </a>
+                                <% if(hasNextPage) { %>
+                                  <a style="text-decoration: none;padding: .5rem; margin:0 1rem; color:black;"
+                                    href="/user/orders?page=<%=  page+1 %>"><i class="fa-solid fa-chevron-right"
+                                      aria-hidden="true"></i></a>
+                                  <% } %>
+                            </section>
+            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Class Timetable End -->
+<%- include("../partials/userFooter.ejs") %>

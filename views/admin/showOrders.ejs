@@ -1,0 +1,128 @@
+<%- include("../partials/admin-navbar.ejs") %>
+<br>
+<div class="card" >
+<h5 class="card-header"><strong>Show Orders</strong></h5>
+<div class="table-responsive text-nowrap">
+    <table class="table">
+      <thead>
+        <tr>
+            <th>userName</th>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Order date</th>
+            <th>Order status</th>
+            <th>Payment Status</th>
+            <th>Method</th>
+            <th>More</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <% orders.forEach(function(order){ %>
+          <% order.products.forEach(function(x){ %>
+          <tr>
+            <td><%= order.userId.name  %> </td>
+            <td><strong> <%= x.productId.name %></strong></td>
+            <td><%= x.quantity %></td>
+            <td><strong><%= x.productId.price %></strong></td>
+            <td style="width: 34px; font-size:11px;" >  <%= moment(order.date).format("LL")  %></td>
+
+            <td>   
+              <% if(x.orderStatus == "Order Placed") { %>
+                        <button   onclick="changeStatus('<%= x.orderStatus %>','<%= order._id %>','<%= x.productId._id%>')"
+                          class="btn btn-outline-dark btn-sm"
+                          style="width: 165px"
+                          type="button"
+                          aria-expanded="false"
+                        >
+                          Order Confirmed
+                        </button>
+                        <% } else if(x.orderStatus == "Packed"){ %>
+                        <button onclick="changeStatus('<%= x.orderStatus %>','<%= order._id %>','<%= x.productId._id%>')"
+                          class="btn btn-outline-dark btn-sm"
+                          style="width: 165px"
+                          type="button"
+                          aria-expanded="false"
+                        >
+                         Packed
+                        </button>
+                        <% } else if(x.orderStatus == "Shipped"){ %>
+                        <button onclick="changeStatus('<%= x.orderStatus %>','<%= order._id %>','<%= x.productId._id%>')"
+                          class="btn btn-outline-primary btn-sm"
+                          style="width: 165px"
+                          type="button"
+                          aria-expanded="false"
+                        >
+                          Shipped
+                        </button>
+                       
+                        <% } else if(x.orderStatus == "Delivered"){ %>
+                        <button  onclick="changeStatus('<%= x.orderStatus %>','<%= order._id %>','<%= x.productId._id%>')"
+                          class="btn btn-outline-success btn-sm"
+                          style="width: 165px"
+                          type="button"
+                          aria-expanded="false"
+                        >
+                          Delivered
+                        </button>
+                        <% } else if(x.orderStatus=='Cancelled'){ %>
+                        <button  onclick="changeStatus('<%= x.orderStatus %>','<%= order._id %>','<%= x.productId._id%>')"
+                          class="btn btn-outline-secondary btn-sm disabled"
+                          style="width: 165px"
+                          type="button"
+                          aria-expanded="false"
+                        >
+                         Cancelled
+                        </button>
+                        <% } %>
+                </td>
+              <td><%= x.paymentStatus %></td>
+              <td><%= order.paymentMethod %></td>
+
+              
+              <% if (x.orderStatus=='Cancelled') {%>
+                <td><h4>No Details</h4></td>
+                <% }else {%> 
+                  <td><a href=""><button class="btn btn-outline-info" >Details</Details></button></a></td>
+            <% } %> 
+
+            
+  
+          </tr>
+          <% }) %>
+          <% }) %>
+          
+         
+        
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  function changeStatus(status, orderId, productId){
+    if(confirm("are you sure to proceed")){
+
+      $.ajax({
+          url:"/admin/changeStatus",
+          data:{
+              status,
+              orderId,
+              productId
+          },
+          method:"post",
+          success:(response)=>{
+            
+              if(response.success){
+                  window.location.reload()
+              }
+          }
+      })
+    }
+   
+  }
+
+  </script>
+
+<%- include("../partials/admin-footer.ejs") %>
