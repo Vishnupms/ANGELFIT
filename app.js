@@ -61,8 +61,11 @@ app.use(session({
 
 app.use('/admin',adminRouter)
 app.use('/',userRouter)
+app.use("*",(req,res)=>{
+    res.render('error');
+  })    
 
 
-app.listen(8000, console.log("Server started: 8000"))
+app.listen(5000, console.log("Server started: 5000"))
 
 

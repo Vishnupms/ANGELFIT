@@ -12,7 +12,7 @@ let v4;
 var otp = Math.random();
 otp = otp * 1000000;
 otp = parseInt(otp);
-console.log(otp);
+
 
 var Name;
 var Email;
@@ -36,13 +36,14 @@ module.exports = {
   },
   //show home
   userHome: async (req, res) => {
+    try{
     const cate = req.query.category
-    console.log(cate);
+
     let category = await categoryModel.find({})
     let allProducts = await productModel.find()
     if(cate){
       let products = await productModel.find({category:cate});
-      console.log(products);
+      
       
       let banner = await bannerModel.find({})
       res.render("user/home", {category,allProducts,products, banner,v4:true});
@@ -52,26 +53,40 @@ module.exports = {
       let banner = await bannerModel.find({})
       res.render("user/home", {category,allProducts,products, banner,v4:true});
     }
+  }
+  catch{
+    res.render("error")
+  }
   },
 
   landing:async(req,res)=>{
+    try{
     let products = await productModel.find().limit(9)
     res.render("user/landing-page",{products,v4:false})
+  }
+  catch{
+    res.render("error")
+  }
   },
   
   shop: async (req, res) => {
+    try{
     const cate = req.query.category
-    console.log(cate);
+ 
     let category = await categoryModel.find({})
     if(cate){
       let products = await productModel.find({category:cate});
-      console.log(products);
+    
       res.render("user/shop", {category,products,v4:true});
     }else{
       let products = await productModel.find({});
       let category = await categoryModel.find({})
       res.render("user/shop", {category,products,v4:true});
     }
+  }
+  catch{
+    res.render("error")
+  }
   },
   // signup: async (req, res) => {
   //   const { name, phone, email, password } = req.body;
@@ -110,6 +125,7 @@ module.exports = {
   // },
   //postLogin
   signin: async (req, res) => {
+    try{
     const { email, password } = req.body;
     const user = await userModel.findOne({
       $and: [{ email }, { status: "UnBlocked" }],
@@ -125,6 +141,10 @@ module.exports = {
       req.session.userlogin = true;
       res.redirect("/home");
     }
+  }
+  catch{
+    res.render("error")
+  }
   },
   //session middleware
   userSession: (req, res, next) => {
@@ -148,6 +168,7 @@ module.exports = {
   },
     // DO_SIGNUP
     sendOtp: async (req, res) => {
+      try{
       Email = req.body.email;
       Name = req.body.name;
       Phone = req.body.phone;
@@ -174,13 +195,18 @@ module.exports = {
           console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
   
           res.render("user/otp");
-          console.log("hai");
+          
         });
       } else {
         res.redirect("/login");
       }
+    }
+    catch{
+      res.render("error")
+    }
     },
     resendOtp: async (req, res) => {
+      try{
       var mailOptions = {
         to: Email,
         subject: "Otp for registration is: ",
@@ -199,9 +225,15 @@ module.exports = {
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
         res.render("user/otp");
       });
+    }
+    catch{
+      res.render("error")
+    }
+      
     },
   
     varifyOtp: async (req, res) => {
+      try{
       if (req.body.otp == otp) {
         const newUser = userModel({
           name: Name,
@@ -216,7 +248,7 @@ module.exports = {
             newUser
               .save()
               .then(() => {
-                console.log(newUser);
+               
                 req.session.user = newUser;
                 res.redirect("/login");
               })
@@ -229,25 +261,40 @@ module.exports = {
       } else {
         res.render("user/otp");
       }
+    }
+    catch{
+      res.render("error")
+    }
     },
 
     //landing products
     landingProducts: async(req,res)=>{
+      try{
       const id = req.params.id;
       const singleProduct = await productModel.findById({_id: id});
       res.render("user/landingproduct", { singleProduct, v4:false });
+    }
+    catch{
+      res.render("error")
+    }
     },
     
 
   //productDetails
   productDetails: async(req,res)=>{
+    try{
     const id = req.params.id;
     const singleProduct = await productModel.findById({_id: id});
     res.render("user/product-details", { singleProduct, v4:true });
+  }
+  catch{
+    res.render("error")
+  }
   },
   
   //wishList
   wishList: async(req, res) => {
+    try{
   let user = req.session.user;
   let userId = user._id;
   return new Promise(async(resolve,reject)=>{
@@ -266,10 +313,15 @@ module.exports = {
       res.render("user/wishlist",{login:true,list: [],v4:true})
     }
   })
+}
+catch{
+  res.render("error")
+}
   },
  
 // addto Wishlist
 addtoWishList:async(req,res)=>{
+  try{
   let productId = req.params.id;
   let user = req.session.user;
   let userId = user._id
@@ -292,9 +344,14 @@ addtoWishList:async(req,res)=>{
         res.json({status:true})
       });
     }
+  }
+  catch{
+    res.render("error")
+  }
   },
   // remove wishlist
   removeWishList:async(req,res)=>{
+    try{
     const id = req.params.id;
     let user = req.session.user;
     let userId = user._id;
@@ -302,10 +359,15 @@ addtoWishList:async(req,res)=>{
     .then(()=>{
       res.redirect("/wishlist")
     })
+  }
+  catch{
+    res.render("error")
+  }
   },
 
   // move to cart
   moveToCart:async(req,res)=>{
+    try{
     let user = req.session.user
     let userId = user._id
     let productId = req.params.id
@@ -352,11 +414,16 @@ addtoWishList:async(req,res)=>{
         });
     }
     res.redirect("/cart")
+  }
+  catch{
+    res.render("error")
+  }
   },
 
   
       //profile
       profile:async(req,res)=>{
+        try{
         let user = req.session.user;
         let userId = user._id;
         let address = await addressModel.findOne({userId:userId})
@@ -371,33 +438,16 @@ addtoWishList:async(req,res)=>{
           address = []
         }
         res.render("user/profile" , {address,Index:1 ,user,v4:true})
+      }
+      catch{
+        res.render("error")
+      }
       },
    
-      //manage Address
-      manageAddress:async(req,res)=>{
-        let user = req.session.user;
-        let userId = user._id;
-        
-        let address = await addressModel.findOne({userId:userId});
-        
-
-        if(address != null){
-          if(address.address.length > 0){
-            address = address.address
-          }
-          else{
-            address = []
-          }
-
-          }
-          else{
-            address = []
-          }
-
-          res.render("user/manageAddress",{address,user, Index:1, v4:true})
-        },
+     
         //new address
         newAddress:async(req,res)=>{
+          try{
           let user = req.session.user;
           let userId = user._id;          
           const { fullName, houseName, city, state, pincode, phone} = req.body;
@@ -429,7 +479,10 @@ addtoWishList:async(req,res)=>{
                 console.log(err)
               })
           } 
-      
+        }
+        catch{
+          res.render("error")
+        }
         },
         //delete an address
         deleteAddress:async(req,res)=>{

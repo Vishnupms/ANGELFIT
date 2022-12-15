@@ -60,8 +60,7 @@ router.get('/removeCart/:id/:total',cartController.removeCart);
 
 //ADDRESS / PROFILE
 router.get('/profile',controller.profile) 
-//manage Address
-router.get('/profile/manageAddress',controller.manageAddress)
+
 // add new Address
 router.post('/newAddress',controller.newAddress)
 //deleteAddress

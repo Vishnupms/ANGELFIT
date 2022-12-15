@@ -11,7 +11,9 @@ var instance = new Razorpay({
 });
   
 module.exports = {
+  
     checkOut:async(req,res)=>{
+      try{
         let user = req.session.user;
           let userId = user._id;    
       
@@ -34,10 +36,15 @@ module.exports = {
        else{
         res.redirect("/cart")
        }
+       }
+        catch{
+          res.render("error")
+        }
 
     },
     // place an order
     placeOrder:async(req,res)=>{
+      try{
         let userId = req.session.user._id
         let adrsIndex = req.body.index 
         let paymentMethod = req.body["paymentMethod"];
@@ -78,8 +85,13 @@ module.exports = {
               res.json(response);
             });
           }
+        }
+        catch{
+          res.render("error")
+        }
     },
 verifyPayment:async(req,res)=>{
+  try{
   userId=req.session.user._id;
   let cart = await cartModel.findOne({userId})
   let products = cart.products
@@ -123,6 +135,10 @@ verifyPayment:async(req,res)=>{
   else{
     res.json({status:false})
   }
+}
+catch{
+  res.render("error")
+}
 },
 
 
@@ -130,6 +146,7 @@ verifyPayment:async(req,res)=>{
 
     //Checkout newAddress
     checkOutnewAddress:async(req,res)=>{
+      try{
         let user = req.session.user;
         let userId = user._id; 
         const {fullName,houseName,city,state,pincode,phone} = req.body;
@@ -160,9 +177,14 @@ verifyPayment:async(req,res)=>{
             })
 
     }
+  }
+  catch{
+    res.render("error")
+  }
 
 },
 orders: async (req, res) => { 
+  try{
   let userId = req.session.user._id;
   const page = parseInt(req.query.page) || 1;
   const items_per_page = 5;
@@ -187,12 +209,21 @@ orders: async (req, res) => {
     }else{
       res.render("user/orders",{ orders:[]});
     }
-  
+  }
+        catch{
+          res.render("error")
+        }
 },
 
 orderSuccess:(req,res)=>{
+  try{
     res.render("user/order-success")
+    }
+        catch{
+          res.render("error")
+        }
 },
+
 cancelOrder:async(req,res)=>{
   let productId= req.body.productId
   let response = await orderModel.updateOne(

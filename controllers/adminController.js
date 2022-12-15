@@ -10,12 +10,14 @@ const categoryModel = require("../models/admin/categoryModel");
 
 
 module.exports = {
+
     adminLogin: (req, res)=> {
         res.render("admin/admin-login")
     },
 
     adminHome: async (req, res) => {
 
+      try{
       let userCount = await userModel.find({status:"UnBlocked"}).countDocuments()
       let productCount = await productModel.find({status:"listed"}).countDocuments()
       let sales = await orderModel.aggregate([
@@ -66,13 +68,18 @@ module.exports = {
     
       
       res.render("admin/admin-home", {userCount, productCount, totalSales , totalOnlineSales ,offlinePay });
+    }catch{
+      res.render("error")
+    }
     },
   
     // adminSignup:(req,res)=> {
     //     res.render('admin/admin-signup')
     // },
     
+    //-----------Admin Login-----------------
     login: async(req,res)=>{
+      try{
         const{ email,password }= req.body;
         const admin = await adminModel.findOne({email})
         if(!admin){
@@ -85,15 +92,20 @@ module.exports = {
            req.session.adminLogin = true
             res.redirect("/admin/dashboard");
         }
+      }catch{
+        res.render("error")
+      }
     },
+    // Admin-session
     adminSession: async (req, res, next) => {
       if (req.session.adminLogin) {
         next();
       } else {
         res.redirect("/admin");
       }
+   
     },
-
+    // logout
     logout: (req, res, next) => {
       if (req.session) {
         // delete session object
@@ -112,11 +124,15 @@ module.exports = {
   
 
 
-
+    //-------------------------------------------------------USER MANAGEMENT------------------------------------------------------
     //Show user section
     showUser: async(req,res,next)=>{
+      try{
         let users = await userModel.find();
         res.render("admin/showUser", {users, index: 1});
+      }catch{
+        res.render("error")
+      }
     },
     //block user
     blockUser : async(req,res)=>{
@@ -134,8 +150,10 @@ module.exports = {
         res.redirect('/admin/showUser')
          })
      },
+//----------------------------------------------------------PRODUCT MANAGEMENT--------------------------------------------
 // addproduct
      newProduct:async(req,res)=>{
+      try{
       console.log(req.body);
       const{ category, name, brand,description,price,status }= req.body
       const image = req.file
@@ -159,11 +177,15 @@ module.exports = {
         console.log(err.message);
         console.log(err);
       })
+    }catch{
+      res.render("error")
+    }
     },
     
 
       //edit products
       updateProduct: async (req, res) => {
+        try{
         const id = req.params.id;
         const { category, name,brand,description,price } = req.body;
         const image = req.file;
@@ -184,14 +206,22 @@ module.exports = {
         )
         .save().then(() => {
           res.redirect("/admin/showproducts");
-        })
+        })}
+        catch{
+          res.render("error")
+        }
 
      },
       //Show product section
     showProducts:async(req, res)=> {
+      try{
      const product =  await productModel.find({})
      let category = await categoryModel.find({})
         res.render("admin/showProducts",{ product,category, index:1}  )
+      }
+      catch{
+        res.render("error")
+      }
     },
 
     editProductForm: async (req, res) => {
@@ -222,20 +252,30 @@ module.exports = {
        res.redirect('/admin/showProducts')
         })
     },
-        
+    //------------------------------------------------CATEGORY MANAGEMENT------------------------------------
     //show category
     showCategories: async (req, res) => {
+      try{
       const category = await categoryModel.find({});
       res.render('admin/showCategory', { category, index: 1 })
+    }
+    catch{
+      res.render("error")
+    }
   },
 
   // new Category
   newCategory: async(req,res)=>{
+    try{
     const category = req.body.category  
     const newCategory = categoryModel({category});
     newCategory.save().then((
       res.redirect("/admin/showCategory")
     ))
+  }
+  catch{
+    res.render("error")
+  }
   },
   // active category
   activeCategory: async (req, res) => {
@@ -253,8 +293,10 @@ module.exports = {
             })
           },
 
-
+//------------------------------------------------BANNER MANAGEMENT--------------------------------------------------------
+// add banner
   newBanner: async (req, res) => {
+    try{
     const { title, description } = req.body;
     const image = req.file;
 
@@ -267,22 +309,37 @@ module.exports = {
       .then(() => {
         res.redirect("/admin/showBanner");
       });
+    }
+    catch{
+      res.render("error")
+    }
   },
   //showbanners page
   showBanner: async (req, res) => {
+    try{
     let banner = await bannerModel.find({});
     res.render("admin/showBanner", { banner,index:1 });
+  }
+  catch{
+    res.render("error")
+  }
   },
   //deletebanner
   deleteBanner: async (req, res) => {
+    try{
     const id = req.params.id;
     await bannerModel.findByIdAndDelete({ _id: id }).then(() => {
       res.redirect("/admin/showBanner");
     });
+  }
+  catch{
+    res.render("error")
+  }
   },
   //update Banner
   
   updateBanner: async (req, res) => {
+    try{
     const id = req.params.id;
     const { title, description } = req.body;
     const image = req.file;
@@ -300,13 +357,18 @@ module.exports = {
     banner.save().then(() => {
       res.redirect("/admin/showBanner");
     });
+  }
+  catch{
+    res.render("error")
+  }
 
 
-  //coupon management
+  //------------------------------------------------------COUPON MANAGEMENT---------------------------------------
   //show coupon
 
   },
   newCoupon: async(req,res)=>{
+    try{
     const {name,code,discount} = req.body;
     await new couponModel({
       name,
@@ -316,21 +378,37 @@ module.exports = {
     .then(()=>{
       res.redirect("/admin/showCoupons")
     })
+  }
+  catch{
+    res.render("error")
+  }
   },
+  // Show coupons-
   showCoupon: async (req, res) => {
+    try{
     let coupon = await couponModel.find({});
     res.render("admin/showCoupons", { coupon,index:1 });
+  }
+  catch{
+    res.render("error")
+  }
   },
+  
 
-  //order mngmnt
+  //-------------------------------------------------ORDER MANAGEMENT---------------------------------------------------
   showOrders :async (req , res) => {
+    try{
    
       let user = await userModel.find()
       const orders =  await orderModel.find().sort({date:-1}).populate('products.productId').populate('userId')
       res.render('admin/showOrders' ,{orders,user,moment})
-
+    }
+    catch{
+      res.render("error")
+    }
        
     },
+    //-----------------------------------------------change status------------------------------------------------------
   
     changeStatus: async (req, res) => {
       const { status, orderId, productId } = req.body;

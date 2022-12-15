@@ -7,6 +7,7 @@ module.exports = {
 
  // SHOW CART
  showCart: async(req,res)=>{
+  try{
       let user = req.session.user;
       let userId = user._id;
     
@@ -24,9 +25,14 @@ module.exports = {
     } else {
       res.render("user/cart", {products: [],v4:true});
     }
+  }
+  catch{
+    res.render("error")
+  }
     },
      //add to cart
      addToCart: async(req,res)=> {
+      try{
         let user = req.session.user
         let userId = user._id
         let productId = req.params.id
@@ -66,11 +72,16 @@ module.exports = {
           newCart.save();
         }
         res.json({success:true});
+      }
+      catch{
+        res.render("error")
+      }
   
   
       },
         // remove cart
         removeCart:async(req,res)=>{
+          try{
           const productId=req.params.id
           let userId= req.session.user._id
           let total = parseInt(req.params.total);
@@ -87,6 +98,10 @@ module.exports = {
           .then(()=>{
             res.redirect("/cart")
           })
+        }
+        catch{
+          res.render("error")
+        }
   
         },
           //quantitiy inc
@@ -138,6 +153,7 @@ module.exports = {
         },
 
         checkCoupen: async (req, res) => {
+          
           try {
             
             const userId = req.session.user._id;
@@ -168,8 +184,9 @@ module.exports = {
             }else{
               res.json({apply : false})
             }
-          } catch {
-            console.log("catch working");
+          }
+          catch{
+            res.render("error")
           }
         },
 
