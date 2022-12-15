@@ -4,14 +4,10 @@ const productSchema = new mongoose.Schema({
     category:{
         type: String,
         required:true,
-        ref:"subCategory"
+        ref:'Category'
        
     },
-    subCategory:{
-        type: String,
 
-       
-    },
     name: {
         type:String,
         required:true
@@ -34,7 +30,7 @@ const productSchema = new mongoose.Schema({
     },
     status: {
         type:String,
-        required:true,
+        
         default:"listed"
     }
 });

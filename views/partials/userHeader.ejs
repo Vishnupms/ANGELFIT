@@ -1,27 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>Gymnast - Gym Website Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free Website Template" name="keywords">
-    <meta content="Free Website Template" name="description">
-
-    <!-- Favicon -->
-    <link href="/public/user/img/favicon.ico" rel="icon">
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!-- Flaticon Font -->
-    <link href="/public/user/lib/flaticon/font/flaticon.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/public/user/css/style.min.css" rel="stylesheet">
-    
-</head>
+<%- include("../layouts/layoutHeader.ejs") %>
 <body class="bg-white">
  <!-- Navbar Start -->
  <div class="container-fluid p-0 nav-bar">
@@ -34,21 +11,26 @@
         </button>
         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
             <div class="navbar-nav ml-auto p-4 bg-secondary">
-                <a href="/home" class="nav-item nav-link">Home</a>
-                <a href="/wishlist" class="nav-item nav-link">wishlist</a>
-                <a href="/cart" class="nav-item nav-link">cart</a>
+                <a href="/home" class="nav-item nav-link">Home <i class="fas fa-home"></i></a>
+                <a href="/shop" class="nav-item nav-link">Shop <i class="fa-solid fa-store"></i></i></a>
+                <a href="/wishlist" class="nav-item nav-link">wishlist <i class="fa fa-heart"></i></a>
+                <a href="/cart" class="nav-item nav-link">cart <i class="fas fa-shopping-cart"></i></a>
+                <%if(v4==true){%>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Profile</a>
+                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Profile <i class="fa fa-user"></i></a>
                     <div class="dropdown-menu text-capitalize">
-                        <a href="/profile" class="dropdown-item">My Profile</a>
-                        <a href="/login" class="dropdown-item">LogOut</a>
+                        <a href="/profile" class="dropdown-item">My Profile </a>
+                        <a href="/logout" class="dropdown-item">LogOut</a>
                     </div>
                 </div>
-                <a href="" class="nav-item nav-link">Contact</a>
+                <%}else{%>
+                    <a href="/login" class="nav-item nav-link">Signin</a>
+                    <%}%>
             </div>
         </div>
     </nav>
 </div>
+
 <!-- <script>
     const activePage = window.location.pathname;
     const navLinks = document.querySelectorAll('nav-link').

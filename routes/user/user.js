@@ -15,46 +15,58 @@ router.get('/login',controller.userLogin)
 router.post('/login',controller.signin)
 
 //signup
-router.post('/signup',controller.signup)
+router.post("/signup", controller.sendOtp);
+router.post("/resendOtp", controller.resendOtp);
+router.post("/varifyOtp", controller.varifyOtp);
 
+router.get('/just-details/:id',controller.landingProducts)
 
+//landing page
 router.get('/',controller.landing)
+//landing products
+// logout
+router.get("/logout", controller.logout);
+
+
 //product-details
 router.get('/product-details/:id',controller.productDetails)
+//........................................................
 
-//otp-form
-// router.get('/otp-validation',controller.otpValid)
+router.post('/editProfile/:id',controller.editProfile);
+
+router.use(controller.userSession)
+//shop
+router.get('/shop',controller.shop)
 
 //WISHLIST
-router.get('/wishlist',controller.userSession,controller.wishList)
-router.post('/addtowishlist/:id',controller.userSession,controller.addtoWishList)
-router.get('/removeWishList/:id',controller.userSession,controller.removeWishList)
+
+router.get('/wishlist',controller.wishList)
+router.post('/addtowishlist/:id',controller.addtoWishList)
+router.get('/removeWishList/:id',controller.removeWishList)
 //move to cart
-router.post('/moveToCart/:id',controller.userSession,controller.moveToCart)
+router.post('/moveToCart/:id',controller.moveToCart)
 
 
 //CART
-router.get('/cart',controller.userSession,cartController.showCart);
+router.get('/cart',cartController.showCart);
 //add to cart
-router.post('/addtocart/:id',controller.userSession,cartController.addToCart); 
+router.post('/addtocart/:id',cartController.addToCart); 
 //qty inc
-router.get('/quantityinc/:id/:price',controller.userSession,cartController.qtyInc);
+router.post('/quantityinc/:id',cartController.qtyInc);
 //qty dec
-router.get('/quantitydec/:id/:price',controller.userSession,cartController.qtyDec);
+router.post('/quantitydec/:id',cartController.qtyDec);
 //removeCart
-router.get('/removeCart/:id/:total',controller.userSession,cartController.removeCart);
+router.get('/removeCart/:id/:total',cartController.removeCart);
 
-
-
-//ADDRESS
-router.get('/profile',controller.userSession,controller.profile) 
+//ADDRESS / PROFILE
+router.get('/profile',controller.profile) 
 //manage Address
-router.get('/profile/manageAddress',controller.userSession,controller.manageAddress)
+router.get('/profile/manageAddress',controller.manageAddress)
 // add new Address
-router.post('/newAddress',controller.userSession,controller.newAddress)
+router.post('/newAddress',controller.newAddress)
 //deleteAddress
-router.get('/deleteAddress/:id',controller.userSession,controller.deleteAddress)
-
+router.get('/deleteAddress/:id',controller.deleteAddress)
+//edit profile
 
 
 //ORDERS
@@ -62,20 +74,22 @@ router.get('/deleteAddress/:id',controller.userSession,controller.deleteAddress)
 //change address
 router.post('/checkout', orderController.checkOut);
 //checkout
-router.get('/checkout',controller.userSession,orderController.checkOut)
+router.get('/checkout',orderController.checkOut)
 //checkout new address
-router.post('/checkOutnewAddress',controller.userSession,orderController.checkOutnewAddress)
+router.post('/checkOutnewAddress',orderController.checkOutnewAddress)
 //place Order
-router.post('/placeOrder',controller.userSession,orderController.placeOrder)
+router.post('/placeOrder',orderController.placeOrder)
 //order-success
-router.get('/orderSuccess',controller.userSession,orderController.orderSuccess)
+router.get('/orderSuccess',orderController.orderSuccess)
 //verify payment
-router.post('/verifyPayment',controller.userSession,orderController.verifyPayment)
+router.post('/verifyPayment',orderController.verifyPayment)
 //orders
-router.get('/orders',controller.userSession, orderController.orders)
-
+router.get('/orders', orderController.orders)
+//cancel order
+router.post('/cancelOrder',orderController.cancelOrder)
 //checkcoupon
-router.post('/checkCoupon',controller.userSession,cartController. checkCoupen)
+router.post('/checkCoupon',cartController. checkCoupen)
+
 
 
 

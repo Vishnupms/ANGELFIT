@@ -1,0 +1,43 @@
+<%- include("../partials/admin-navbar.ejs") %>
+<br>
+            <div class="form-control mb-4 ">
+                      <form method="post" action="/admin/updateProduct/<%= singleProduct._id %>" enctype="multipart/form-data">
+                        <div class="mb-3">
+                          <label for="recipient-name" class="col-form-label">Product Name:</label>
+                          <input type="text" name="name" value="<%= singleProduct.name %>" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="mb-3">
+                          <label for="recipient-name" class="col-form-label">Brand:</label>
+                          <input type="text" value="AngelFit" name="brand" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="mb-3">
+                          <label for="recipient-name" class="col-form-label">Price:</label>
+                          <input type="text" name="price" value="<%= singleProduct.price %>" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="mb-3">
+                          <label for="recipient-name" class="col-form-label">Category:</label>
+                          <select class="form-control" name="category">
+                          <% category.forEach(function(x) { %>
+                            <% if(x.status == "active") { %>
+                            <option ><%= x.category %></option>
+                            <% } %>
+                            <% }) %>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="message-text" class="col-form-label">Description:</label>
+                          <textarea class="form-control" value="<%= singleProduct. description %>" name="description" id="message-text"></textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label for="recipient-name" class="col-form-label">Image:</label>
+                          <input type="file" name="image" value="<%= singleProduct.image %>" class="form-control" id="recipient-name">
+                        </div>
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                      </form>
+                    </div>
+        
+                    <%- include("../partials/admin-footer.ejs") %>

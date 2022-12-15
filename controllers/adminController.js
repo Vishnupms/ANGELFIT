@@ -1,23 +1,73 @@
 const adminModel = require("../models/admin/adminModel");
 const bcrypt = require('bcrypt');
 const userModel = require("../models/user/userModel");
-const  Category = require("../models/admin/categorySchema")
-const categorySchema = require("../models/admin/categorySchema");
-const subcategorySchema = require("../models/admin/subcategorySchema");
 const productModel = require("../models/admin/productModel");
 const bannerModel = require("../models/admin/bannerModel")
 const couponModel = require("../models/admin/couponModel")
 const orderModel = require("../models/user/orderModel")
-const moment = require("moment")
+const moment = require("moment");
+const categoryModel = require("../models/admin/categoryModel");
 
 
 module.exports = {
     adminLogin: (req, res)=> {
         res.render("admin/admin-login")
     },
-    adminHome:(req,res)=> {
-        res.render('admin/admin-home')
+
+    adminHome: async (req, res) => {
+
+      let userCount = await userModel.find({status:"UnBlocked"}).countDocuments()
+      let productCount = await productModel.find({status:"listed"}).countDocuments()
+      let sales = await orderModel.aggregate([
+        {
+          "$group":{
+            '_id':null,
+            'totalSales':{
+              "$sum":"$total"
+            }
+          }
+      }])
+   
+      let onlinePayments = await orderModel.aggregate([
+        {
+          "$match":{
+            paymentMethod:"Razorpay"
+          }
+        },
+        {
+          "$group":{
+            "_id":null,
+            'totalOnlineSales':{
+              "$sum":"$total"
+            }
+          }
+        }
+      ])
+  
+      let offlinePayments = await orderModel.aggregate([
+        {
+          "$match":{ 
+            paymentMethod:"COD"
+          }
+        },
+        {
+          "$group":{
+            "_id":null,
+            'totalOfflineSales':{
+              "$sum":"$total"
+            }
+          }
+        }
+      ])
+  
+      let totalSales = sales.map(a=> a.totalSales)
+      let totalOnlineSales = onlinePayments.map(a=> a.totalOnlineSales)
+      let offlinePay = offlinePayments.map(a=> a.totalOfflineSales)
+    
+      
+      res.render("admin/admin-home", {userCount, productCount, totalSales , totalOnlineSales ,offlinePay });
     },
+  
     // adminSignup:(req,res)=> {
     //     res.render('admin/admin-signup')
     // },
@@ -32,9 +82,37 @@ module.exports = {
         if(!isMatch) {
             return res.redirect("/admin");
         } else {
-            res.render("admin/admin-home");
+           req.session.adminLogin = true
+            res.redirect("/admin/dashboard");
         }
     },
+    adminSession: async (req, res, next) => {
+      if (req.session.adminLogin) {
+        next();
+      } else {
+        res.redirect("/admin");
+      }
+    },
+
+    logout: (req, res, next) => {
+      if (req.session) {
+        // delete session object
+        req.session.destroy((err) => {
+          if (err) {
+            return next(err);
+          } else {
+            return res.redirect("/admin");
+          }
+        });
+      }
+    },
+  
+  
+
+  
+
+
+
     //Show user section
     showUser: async(req,res,next)=>{
         let users = await userModel.find();
@@ -82,13 +160,15 @@ module.exports = {
         console.log(err);
       })
     },
+    
 
       //edit products
       updateProduct: async (req, res) => {
         const id = req.params.id;
-        const { category, name, brand,description,price } = req.body;
+        const { category, name,brand,description,price } = req.body;
         const image = req.file;
-        const product = await productModel.findByIdAndUpdate(
+        console.log(req.file);
+        const product = await productModel.updateOne(
           { _id: id },
           {
             $set: {
@@ -98,20 +178,32 @@ module.exports = {
                 description,
                 price,
                 image:image.path,
+                
             },
           }
-        );
-        product.save().then(() => {
+        )
+        .save().then(() => {
           res.redirect("/admin/showproducts");
-        });
-    
+        })
 
      },
       //Show product section
     showProducts:async(req, res)=> {
      const product =  await productModel.find({})
-        res.render("admin/showProducts",{product, index:1}  )
+     let category = await categoryModel.find({})
+        res.render("admin/showProducts",{ product,category, index:1}  )
     },
+
+    editProductForm: async (req, res) => {
+      const id = req.params.id;
+      const singleProduct = await productModel.findOne({ _id: id });
+      let category = await categoryModel.find();
+      res.render("admin/editProducts", {
+        singleProduct,
+        category,
+      });
+    },
+  
 
     //list products
     listProduct: async(req,res)=>{
@@ -132,48 +224,34 @@ module.exports = {
     },
         
     //show category
- 
+    showCategories: async (req, res) => {
+      const category = await categoryModel.find({});
+      res.render('admin/showCategory', { category, index: 1 })
+  },
 
-
-    //addcategory
-//     addCategory:async(req,res)=>{
-//         try{
-//             const check_cat = await categorySchema.find({
-//                 category:req.body.category
-//             });
-//             if(check_cat.length > 0){
-//                 let checking = faslse;
-//                 for(let i = 0;i < check_cat.length;i++){
-//                     if(
-//                         check_cat[i]["category"].toLowerCase()===
-//                         req.body.category.toLowerCase()
-//                     ){
-//                         checking = true;
-//                         break;
-//                     }
-//                 }
-//                 if (checking === false){
-//                     const category = new categorySchema({
-//                         category:req.body.category,
-//                     });
-//                     const sub_cat_data = await category.save().then(()=>{
-//                         res.redirect("/admin/login/category");
-//                     });
-//                 }else{
-//                     res.redirect("/admin/login/category");
-//                 }
-//             }else{
-//                 const category = new categorySchema({
-//                     category:req.body.category,
-//                 });
-//                 const sub_cat_data = await category.save().then(()=>{
-//                     res.redirect("/admin/login/category");
-//             });
-//         }
-//     } catch(error){
-//         res.status(400).send({success: false,mesg: error.message})
-//     }
-// }
+  // new Category
+  newCategory: async(req,res)=>{
+    const category = req.body.category  
+    const newCategory = categoryModel({category});
+    newCategory.save().then((
+      res.redirect("/admin/showCategory")
+    ))
+  },
+  // active category
+  activeCategory: async (req, res) => {
+    const id = req.params.id
+    await categoryModel.findByIdAndUpdate({ _id: id }, { $set: { status: "active" } })
+        .then(() => {
+            res.redirect('/admin/showCategory')
+        })
+      },
+      inActiveCategory: async (req, res) => {
+        const id = req.params.id
+        await categoryModel.findByIdAndUpdate({ _id: id }, { $set: { status: "inActive" } })
+            .then(() => {
+                res.redirect('/admin/showCategory')
+            })
+          },
 
 
   newBanner: async (req, res) => {

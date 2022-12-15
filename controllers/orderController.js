@@ -3,6 +3,7 @@ const cartModel = require("../models/user/cartModel")
 const orderModel = require("../models/user/orderModel")
 const Razorpay = require("razorpay")
 const moment = require("moment")
+const { log } = require("console")
 
 var instance = new Razorpay({
   key_id: "rzp_test_tf5Cb2ciSL0AeO",
@@ -15,6 +16,8 @@ module.exports = {
           let userId = user._id;    
       
        let cart = await cartModel.findOne({userId:userId}).populate("products.productId")
+       let count = await cartModel.find().countDocuments
+       console.log(count);
 
        let address = await addressModel.findOne({userId})
 
@@ -26,7 +29,7 @@ module.exports = {
         let length = address ? address.length: 0
         let index = req.body.index ? req.body.index : length -1;
         
-        res.render("user/checkout",{cartTotal,cartItems,address,index,v4:false})
+        res.render("user/checkout",{cartTotal,count,cartItems,address,index,v4:true})
        }
        else{
         res.redirect("/cart")
@@ -41,10 +44,13 @@ module.exports = {
         let addresses = await addressModel.findOne({userId})
         let address = addresses.address[adrsIndex]
         let cart = await cartModel.findOne({userId})
+        let cartId = cart._id
         let total = cart.cartTotal
         let products = cart.products
-
-        const newOrder = new orderModel({
+        // let orderId = newOrder._id;
+        // total = newOrder.total
+        if (paymentMethod == "COD") {
+          const newOrder = new orderModel({
             userId,
             products,
             total,
@@ -54,9 +60,6 @@ module.exports = {
         newOrder.save().then(async()=>{
             console.log(newOrder)
         });
-        let orderId = newOrder._id;
-        total = newOrder.total
-        if (paymentMethod == "COD") {
             await cartModel.findByIdAndDelete({ _id: cart._id });
             res.json({ codSuccess: true });
           } else {
@@ -65,7 +68,7 @@ module.exports = {
                 {
                   amount: total * 100,
                   currency: "INR",
-                  receipt: "" + orderId,
+                  receipt: "" + cartId,
                 },
                 function (err, order) {
                   resolve(order);
@@ -79,9 +82,17 @@ module.exports = {
 verifyPayment:async(req,res)=>{
   userId=req.session.user._id;
   let cart = await cartModel.findOne({userId})
+  let products = cart.products
+  let total = cart.cartTotal
+  // add = add[1].split('=')
+  // const addIndex = parseInt(add[1])
   const crypto = require("crypto");
   let details = req.body;
   console.log(details);
+  let addresses = await addressModel.findOne({userId})
+  let add = details['address'].split('=')
+  console.log(add[1]);
+  let address = addresses.address[add[1]]
   let hmac = crypto.createHmac("sha256", "UxThv9CDA9dl5xX8BFq0VJvd");
   console.log(hmac);
   hmac.update(
@@ -92,6 +103,16 @@ verifyPayment:async(req,res)=>{
   hmac = hmac.digest("hex");
   if(hmac === details.payment.razorpay_signature){
     let orderId = details.order.receipt
+    const newOrder = new orderModel({
+      userId,
+      products,
+      total,
+      address,
+      paymentMethod: "RazorPay"
+  });
+  newOrder.save().then(async()=>{
+      console.log(newOrder)
+  });
     await orderModel.findOneAndUpdate(
       {_id:orderId},                                         // set payment status :paid
       {$set:{paymentStatus:"paid"}}
@@ -154,6 +175,7 @@ orders: async (req, res) => {
     console.log(orders);
     if(orders){
       res.render("user/orders", { 
+        v4:true, 
         moment,
         orders,
         index: 1,
@@ -168,10 +190,16 @@ orders: async (req, res) => {
   
 },
 
-
-
-
 orderSuccess:(req,res)=>{
     res.render("user/order-success")
+},
+cancelOrder:async(req,res)=>{
+  let productId= req.body.productId
+  let response = await orderModel.updateOne(
+    { _id: req.body['id'] , "products.productId":productId },
+    { $set: { 'products.$.orderStatus': "Cancelled" } }
+  );
+  console.log(response);
+  res.json({status:true})
 }
 }

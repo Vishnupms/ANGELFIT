@@ -103,14 +103,14 @@ module.exports = {
           { 
             $inc: {
                 "products.$.quantity":1,
-                "products.$.total":price,
+                "products.$.total":product.price,
                 cartTotal:product.price
                
             },
         }
           )
           .then(()=>{
-            res.redirect("/cart")
+            res.redirect("back")
           })
         },
          // qty decrement
@@ -119,19 +119,21 @@ module.exports = {
         let productId = req.params.id
         let product = await productModel.findById(productId)
         let price = req.params.price
-
+        let quantity = req.body.quantity
         let cart = await cartModel.findOneAndUpdate(
 
           {userId:userId,"products.productId":productId},
+         
           {
              $inc: {
               "products.$.quantity":-1,
-              "products.$.total":-price,
+              "products.$.total":-product.price,
               cartTotal:-product.price
             }
             }
           ).then(()=>{
-            res.redirect("/cart")
+         
+            res.redirect("back")
           })
         },
 

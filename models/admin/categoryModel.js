@@ -5,7 +5,12 @@ const categorySchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    status:{
+        type : String,
+        default :"active"
+
+    }
 
 })
 
-module.exports = CategorySchema = mongoose.model('category',categorySchema)
+module.exports = Category = mongoose.model('Category',categorySchema)

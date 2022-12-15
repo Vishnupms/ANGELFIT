@@ -1,10 +1,12 @@
 <%- include("../partials/userHeader.ejs") %>
+
     <!-- Page Header Start -->
     <div class="container-fluid page-header mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 300px">
             <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">Checkout</h4>
             <div class="d-inline-flex">
                 <p class="m-0 text-white"><a class="text-white" href="">Home</a></p>
+
                 <p class="m-0 text-white px-2">/</p>
                 <p class="m-0 text-white">My Cart</p>
             </div>
@@ -188,7 +190,7 @@
         <div class="col-md-4 order-md-2 mb-4">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
               <span class="text-muted"> Your Orders</span>
-              <span class="badge badge-secondary badge-pill">3</span>
+              <span class="badge badge-secondary badge-pill">     </span>
             </h4>
             <% cartItems.forEach(function(product){ %> 
             <ul class="list-group mb-3">
@@ -214,7 +216,7 @@
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Promo code" id="codeInput">
                 <div class="input-group-append">
-                  <button onclick="getcoupon(' <%= cartTotal %>')" class="btn btn-secondary">Redeem</button>
+                  <button onclick="getcoupon(' <%= cartTotal %>')" class="btn btn-warning text-white">Redeem</button>
                 </div>
               </div><br>
            
@@ -237,6 +239,13 @@
 					value="COD"
 					/>
 					<label class="form-check-label" for="paynow">Cash On Delivery</label>
+          <form id="checkout-form" action="">
+          <input
+					name="index"
+					value="<%= index%>"
+					hidden
+					/>
+        </form>
 				</div>
                 <br>
                 <% if(address !=0) {%>
@@ -262,9 +271,9 @@
         
         </div>
       
-        <footer class="my-5 pt-5 text-muted text-center text-small">
+    
           <p class="mb-1">&copy; 2017-2019 AngelFit</p>
-        </footer>
+
       </div>
        <!-- script -->
        <script>
@@ -344,9 +353,9 @@
 			order_id:order.id,
 			callback_url: "https://eneqd3r9zrjok.x.pipedream.net/",
 		handler: function (response) {
-		alert(response.razorpay_payment_id);
-		alert(response.razorpay_order_id);
-		alert(response.razorpay_signature)
+		// alert(response.razorpay_payment_id);
+		// alert(response.razorpay_order_id);
+		// alert(response.razorpay_signature)
 		verifyPayment(response, order);
 
 	},
@@ -372,6 +381,7 @@
 		data:{
 			payment,
 			order,
+      address: $('#checkout-form').serialize()
 		},
 		method:"post",
 		success:(response)=>{

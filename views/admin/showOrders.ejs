@@ -57,23 +57,17 @@
                         </button>
                        
                         <% } else if(x.orderStatus == "Delivered"){ %>
-                        <button  onclick="changeStatus('<%= x.orderStatus %>','<%= order._id %>','<%= x.productId._id%>')"
-                          class="btn btn-outline-success btn-sm"
+                        <div
+                          class="btn btn-success btn-sm "
                           style="width: 165px"
-                          type="button"
                           aria-expanded="false"
                         >
                           Delivered
-                        </button>
+                        </div>
                         <% } else if(x.orderStatus=='Cancelled'){ %>
-                        <button  onclick="changeStatus('<%= x.orderStatus %>','<%= order._id %>','<%= x.productId._id%>')"
-                          class="btn btn-outline-secondary btn-sm disabled"
-                          style="width: 165px"
-                          type="button"
-                          aria-expanded="false"
-                        >
-                         Cancelled
-                        </button>
+                      
+                         Cancelled <i class="fa fa-ban" style="color: red;"></i>
+                        
                         <% } %>
                 </td>
               <td><%= x.paymentStatus %></td>

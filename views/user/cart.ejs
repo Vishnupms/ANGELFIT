@@ -34,29 +34,31 @@
                        
                     </tr>
                 </thead>
-                <tbody class="align-items-center">
+                <tbody class="align-items-center" id="productCard">
                     <% products.forEach(function(x){ %>
                     <tr> 
                         <td style="width: 10cm;"><img src="/<%= x.productId.image %>"  alt="IMG" style="width: 70px; height: 70px;">&nbsp;&nbsp;<%= x.productId.name %></td>
                         <td style="width: 3cm;"> <i class="fa fa-inr"></i> <%= x.productId.price %></td>
                         <td style="width: 3cm;"><div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                        <a href="/quantitydec/<%=x.productId._id %>/<%=x.productId.price %>">
-                                            
-                                                <i class="fa fa-minus" style="color: rgb(19, 16, 16);"></i></a>&nbsp;
-                                                
+                        <% if( x ?.quantity === 1 ){ %>
+                                                <button disabled class="btn btn-sm" type="button" id="decbutton" ></button>&nbsp;
+
+                                                <%}else{%>
+                                                  <button onclick="decreasePrice('<%= x?.productId._id %>')" class="btn btn-sm" type="button" id="decbutton" style="color: rgb(19, 16, 16);"><i class="fa fa-minus"></i></button>&nbsp;
+                                                  <%}%>
 
                                                 <input id="sst2" class="input-responsive" type="number" name="quantity" value="<%= x.quantity %>" style="width: 1cm ;text-align: center;">
 
-                                                <a id="sst" href="/quantityinc/<%=x.productId._id %>/<%=x.productId.price %>">
+                                            
                                                     
-                                                    &nbsp;<i class=" fa fa-plus" style="color: rgb(19, 16, 16);"></i></a>
+                                                  <button onclick="increasePrice('<%= x?.productId._id %>')" class="btn btn-sm" type="button" style="color: rgb(19, 16, 16);"><i class=" fa fa-plus" style="color: black;"></i></a>
                                                     </div>
                                                     
                                                 </td>
                                
                                                 
                          <td style="width: 3cm;"> <i class="fa fa-inr"></i> <%= x.quantity * x.productId.price %></td>
-                         <td style="width: 1cm; border: 0; align-content: center;"><a href="/removeCart/<%= x.productId._id %>/<%=x.total%>"> <i class="fa fa-close"></i> </a></td>
+                         <td style="width: 1cm; border-color: white; align-content: center;"><a href="/removeCart/<%= x.productId._id %>/<%=x.total%>"> <i class="fa-close" style="color: rgb(119, 122, 124);"></i> </a></td>
 
                    
                     </tr>
@@ -100,8 +102,40 @@
   </div>
 </div>
 <% } %>
+<script>
 
+  //quantity decrement
+  function decreasePrice(productId) {
+  $.ajax({
+    url: "/quantitydec/" + productId ,
+    method: "post",
+    success: (response) => {
+      if (response) {
+        $("#productCard").load(location.href + " #productCard>*", "");
+      } else {
+        swalWithBootstrapButtons.fire("Error", "Something went wrong", "error");
+      }
+    },
+  });
+}
+
+//quantity increment
+function increasePrice(productId) {
+  $.ajax({
+    url: "/quantityinc/" + productId ,
+    method: "post",
+    success: (response) => {
+      if (response) {
+        $("#productCard").load(location.href + " #productCard>*", "");
+      } else {
+        swalWithBootstrapButtons.fire("Error", "Something went wrong", "error");
+      }
+    },
+  });
+}
+
+</script>
 
 
     
-<%- include("../partials/userFooter.ejs") %>
+  <%- include("../partials/userFooter.ejs") %>

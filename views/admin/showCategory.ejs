@@ -1,0 +1,79 @@
+<%- include("../partials/admin-navbar.ejs") %>
+
+<button type="button" class="btn btn-primary col-2 mt-3 " data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" style="margin-left: 880px;">Add Category</button>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/admin/newCategory" enctype="">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Category Name:</label>
+            <input type="text" name="category" class="form-control" id="recipient-name">
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add Category</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="card" >
+<h5 class="card-header"><strong>All Categories</strong></h5>
+<div class="table-responsive text-nowrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Index</th>
+          <th>Category Name</th>
+          <th>Action</th>
+          
+      
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <% category.forEach(function(x) { %>
+          <tr>
+            <td><%= index++%></td>
+            <td><%= x.category %></td>
+            <td>
+              <% if (x.status=="active" ) { %>
+                <form action="/admin/inActiveCategory/<%= x._id %> " method="post">
+                  <button type="submit" class="btn btn-danger"  onclick="alert('Are you sure you want to IN ACTIVE')"> In Active</button>
+                </form>
+                <% } else { %>
+                  <form action="/admin/activeCategory/<%= x._id %> " method="post">
+                    <button type="submit" class="btn btn-success" onclick="alert('Are you sure You want to ACTIVE CATEGORY')">
+                      Active</button>
+                  </form>
+                  <% } %>
+            </td>
+
+            
+ 
+            
+              
+            
+  
+          </tr>
+          <% }) %>
+          
+         
+        
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+  
+
+<%- include("../partials/admin-footer.ejs") %>

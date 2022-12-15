@@ -1,0 +1,64 @@
+
+   <!--add to wishlist -->
+   <script>
+    function addtowishlist(productId,productName){
+        $.ajax({
+            url:'/addtowishlist/' + productId,
+            method:'post',
+            success:(response)=>{
+                if(response.status){
+                    Swal.fire({
+                        icon:'success',
+						title:productName,
+                        text:'Added to wishlist!',	
+                        showConfirmButton:false
+                    })
+
+                }
+
+            }
+        })
+    }
+</script>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+     
+<!--place order -->
+<script>
+
+</script>
+
+
+
+
+
+<!--highlight navbar -->
+<!-- <script>
+
+$(document).ready(function(){
+	$(".nav-item").each(function(){
+		if(this.href == window.location.href){
+			$(this).addClass("active");
+		}
+	});
+});
+</script> -->
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="/public/user/lib/easing/easing.min.js"></script>
+<script src="/public/user/lib/waypoints/waypoints.min.js"></script>
+
+<!-- <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script> -->
+<!-- Contact Javascript File -->
+<script src="/public/user/mail/jqBootstrapValidation.min.js"></script>
+<script src="/public/user/mail/contact.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Template Javascript -->
+<script src="/public/user/js/main.js"></script>
+</body>
+
+</html>

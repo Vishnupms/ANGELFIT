@@ -7,6 +7,10 @@ const Userschema = new mongoose.Schema(
       type: String,
       required:true
     },
+    lastname:{
+      type: String,
+      required:false
+    },
 
     phone: {
       type: Number,

@@ -7,27 +7,38 @@ const router = express.Router();
 //admin login
 router.get('/',controller.adminLogin);
 router.post('/',controller.login)
+router.get("/logout", controller.logout);
 //admin dash
-router.get('/dashboard',controller.adminHome)
+router.get('/dashboard',controller.adminSession,controller.adminHome)
 
 
 //show user list
-router.get('/showUser',controller.showUser)
+router.get('/showUser',controller.adminSession,controller.showUser)
 //block user
 router.post('/blockUser/:id',controller.blockUser)
 //unblock user
 router.post('/unblockUser/:id',controller.unblockUser)
 
 
+//show category
+router.get('/showCategory',controller.adminSession,controller.showCategories)
+//add category
+router.post('/newCategory',controller.newCategory)
+//active category
+router.post('/activeCategory/:id',controller.activeCategory)
+//inactive category
+router.post('/inActiveCategory/:id',controller.inActiveCategory)
+
 //show product list
-router.get('/showProducts',controller.showProducts)
-router.post('/add-product',controller.newProduct)
+router.get('/showProducts',controller.adminSession,controller.showProducts)
+router.post('/add-product',controller.adminSession,controller.newProduct)
 //list product
 router.post('/listProduct/:id',controller.listProduct)
 //unlist product
 router.post('/unlistProduct/:id',controller.unlistProduct)
 //edit products
 router.post('/updateProduct/:id',controller.updateProduct)
+router.post('/editProducts/:id',controller.editProductForm)
 
 
 //BANNER
@@ -55,10 +66,6 @@ router.post('/changeStatus',controller.changeStatus)
 
 
 
-// // show categories
-// router.get('/category',controller.getCategories)
-// // add category
-// router.post('/addCategory',controller.addCategory)
 
 
 
