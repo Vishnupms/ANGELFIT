@@ -527,7 +527,7 @@ addtoWishList:async(req,res)=>{
               }
           );
           await saveUserEdits.save().then(() => {
-              res.redirect("/profile");
+              res.redirect("back");
           });
       }catch{
           res.render("error")
