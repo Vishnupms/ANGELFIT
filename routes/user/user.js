@@ -42,7 +42,7 @@ router.get('/shop',controller.shop)
 
 router.get('/wishlist',controller.wishList)
 router.post('/addtowishlist/:id',controller.addtoWishList)
-router.get('/removeWishList/:id',controller.removeWishList)
+router.post('/removeWishList/:id',controller.removeWishList)
 //move to cart
 router.post('/moveToCart/:id',controller.moveToCart)
 

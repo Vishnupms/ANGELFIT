@@ -184,35 +184,27 @@ catch{
 
 },
 orders: async (req, res) => { 
-  try{
+
   let userId = req.session.user._id;
-  const page = parseInt(req.query.page) || 1;
-  const items_per_page = 5;
-  const totalproducts = await orderModel.find().countDocuments();
   const orders = await orderModel
     .find({userId:userId})
     .populate("products.productId").sort({date:-1})
-    .skip((page-1)*items_per_page).limit(items_per_page)
+ 
 
     console.log(orders);
     if(orders){
       res.render("user/orders", { 
-        v4:true, 
+       
         moment,
         orders,
         index: 1,
-        page,
-        hasNextPage: items_per_page * page < totalproducts,
-        hasPreviousPage: page > 1,
-        PreviousPage: page - 1,
+        v4:true
+        
       });
     }else{
       res.render("user/orders",{ orders:[]});
     }
-  }
-        catch{
-          res.render("error")
-        }
+
 },
 
 orderSuccess:(req,res)=>{

@@ -51,7 +51,7 @@
       <tbody class="table-border-bottom-0">
         <% coupon.forEach(function(x) { %>
           <tr>
-            <td><%= index++%></td>
+            <td><%=index++%></td>
             <td><i class="fab fa-angular fa-lg text-danger me-3"></i><strong><%= x.name %></strong></td>
             <td><%= x.code %></td>
             <td><%= x.discount %></td>
@@ -68,7 +68,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form method="post" action="/admin/add-banner" enctype="multipart/form-data">
+            <form method="post" action="/admin/add-coupon" enctype="multipart/form-data">
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">Couon Name:</label>
                 <input type="text" name="name" class="form-control" id="recipient-name">
@@ -94,7 +94,7 @@
            
  
             
-               <form action="/admin/deleteBanner/<%=x._id %>" method="post" enctype="multipart/form-data">
+               <form action="/admin/deleteCoupon/<%=x._id %>" method="post" enctype="multipart/form-data">
               <button type="submit" class="btn btn-danger" style="width: 100px; height:35px;">Delete</button> 
             </form>
               

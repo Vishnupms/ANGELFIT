@@ -24,7 +24,7 @@
 <div class="tab-content">
     <div id="class-all" class="container tab-pane p-0 active">
         <div class="table-responsive">
-            <table class="table table-bordered table-lg m-0">
+            <table class="table table-bordered table-lg m-0" id="wishlist_table">
                 <thead class="bg-secondary text-white text-center">
                     <tr class="table_head">
                         <th class="bg-white border-0" style=" border: 0;"></th>
@@ -37,7 +37,7 @@
                 <tbody class="align-items-center">
                     <% list.map(function(x){ %>
                     <tr>
-                        <td style="width: 1cm; border-color: white; align-content: center;"><a href="/removeWishList/<%= x._id %>"> <i class="fa fa-close" style="color: rgb(158, 157, 157);"></i> </button></a></td>
+                        <td style="width: 1cm; border-color: white; align-content: center;"><button onclick="removeWishList('<%= x._id %>','<%= x.name %>')" style="border: 0;"> <i class="fa fa-close" style="color: rgb(158, 157, 157);"></i> </button></td>
                         <td ><img src="/<%= x.image %>"  alt="IMG" style="width: 70px; height: 70px;">&nbsp;&nbsp;<%= x.name %></td>
                         <td > <i class="fa fa-inr"></i>  <%= x.price %></td>
                         <td >In-stock</td>
@@ -51,6 +51,28 @@
             </table>
         </div>
     </div>
+    <script>
+         function removeWishList(productId,productName){
+        $.ajax({
+            url:'/removeWishList/' + productId,
+            method:'post',
+            success:(response)=>{
+                if(response.success){
+                    $("#wishlist_table").load(" #wishlist_table >* ")
+                    Swal.fire({
+                        icon:'success',
+                        title:productName,
+                        text:'Item Removed from wishlist!',	
+                        showConfirmButton:false,
+                        timer:1500,
+                    })
+
+                }
+
+            }
+        })
+    }
+    </script>
 
 <% } %>
 

@@ -69,19 +69,30 @@ module.exports = {
   }
   },
   
+  // shop page
   shop: async (req, res) => {
     try{
     const cate = req.query.category
+    const page = parseInt(req.query.page) || 1;
+    const items_per_page = 6;
+    const totalproducts = await productModel.find({}).countDocuments()
+
  
     let category = await categoryModel.find({})
     if(cate){
-      let products = await productModel.find({category:cate});
+      let products = await productModel.find({category:cate}).skip((page - 1) * items_per_page).limit(items_per_page)
     
-      res.render("user/shop", {category,products,v4:true});
+      res.render("user/shop", {category,products,v4:true,page,
+        hasNextPage: items_per_page * page < totalproducts,
+        hasPreviousPage: page > 1,
+        PreviousPage: page - 1,totalproducts,});
     }else{
-      let products = await productModel.find({});
-      let category = await categoryModel.find({})
-      res.render("user/shop", {category,products,v4:true});
+      let products = await productModel.find({}).skip((page - 1) * items_per_page).limit(items_per_page)
+      // let category = await categoryModel.find({})
+      res.render("user/shop", {category,products,v4:true, page,
+        hasNextPage: items_per_page * page < totalproducts,
+        hasPreviousPage: page > 1,
+        PreviousPage: page - 1,totalproducts,});
     }
   }
   catch{
@@ -357,7 +368,7 @@ addtoWishList:async(req,res)=>{
     let userId = user._id;
     await wishlistModel.findOneAndUpdate({userId:userId},{$pull :{ productId: id}})
     .then(()=>{
-      res.redirect("/wishlist")
+      res.json({success:true})
     })
   }
   catch{

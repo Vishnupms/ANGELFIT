@@ -218,24 +218,7 @@
 // }
 //
 
-    function addtocart(productId){
-        $.ajax({
-            url:'/addtocart/' + productId,
-            method:'post',
-            success:(response)=>{
-                if(response.success){
-                    Swal.fire({
-                        icon:'success',
-                        title:'Item Added to Cart!',	
-                        showConfirmButton:false,
-                        timer:1500,
-                    })
-
-                }
-
-            }
-        })
-    }
+    
 
 
 

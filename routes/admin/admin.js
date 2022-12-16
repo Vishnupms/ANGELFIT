@@ -8,12 +8,16 @@ const router = express.Router();
 router.get('/',controller.adminLogin);
 router.post('/',controller.login)
 router.get("/logout", controller.logout);
+
+
+
 //admin dash
-router.get('/dashboard',controller.adminSession,controller.adminHome)
+router.use(controller.adminSession)
+router.get('/dashboard',controller.adminHome)
 
 
 //show user list
-router.get('/showUser',controller.adminSession,controller.showUser)
+router.get('/showUser',controller.showUser)
 //block user
 router.post('/blockUser/:id',controller.blockUser)
 //unblock user
@@ -21,7 +25,7 @@ router.post('/unblockUser/:id',controller.unblockUser)
 
 
 //show category
-router.get('/showCategory',controller.adminSession,controller.showCategories)
+router.get('/showCategory',controller.showCategories)
 //add category
 router.post('/newCategory',controller.newCategory)
 //active category
@@ -30,8 +34,8 @@ router.post('/activeCategory/:id',controller.activeCategory)
 router.post('/inActiveCategory/:id',controller.inActiveCategory)
 
 //show product list
-router.get('/showProducts',controller.adminSession,controller.showProducts)
-router.post('/add-product',controller.adminSession,controller.newProduct)
+router.get('/showProducts',controller.showProducts)
+router.post('/add-product',controller.newProduct)
 //list product
 router.post('/listProduct/:id',controller.listProduct)
 //unlist product
@@ -55,6 +59,8 @@ router.post('/updateBanner/:id', controller.updateBanner)
 router.get('/showCoupon',controller.showCoupon)
 //add coupon
 router.post('/add-coupon',controller.newCoupon)
+//delete coupon
+router.post('/deleteCoupon/:id',controller.deleteCoupon)
 
 //show orders
 router.get('/showOrders',controller.showOrders)

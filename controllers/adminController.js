@@ -376,7 +376,7 @@ module.exports = {
       discount
     }).save()
     .then(()=>{
-      res.redirect("/admin/showCoupons")
+      res.redirect("back")
     })
   }
   catch{
@@ -392,6 +392,14 @@ module.exports = {
   catch{
     res.render("error")
   }
+  },
+
+  deleteCoupon: async(req,res)=>{
+    const id = req.params.id;
+    await couponModel.findByIdAndDelete({_id:id}).then(()=>{
+      res.redirect("back")
+    })
+    
   },
   
 

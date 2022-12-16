@@ -23,7 +23,7 @@ module.exports = {
 
       res.render("user/cart", {products,cartTotal,v4:true});
     } else {
-      res.render("user/cart", {products: [],v4:true});
+      res.render("user/cart", {products: [],v4});
     }
   }
   catch{
