@@ -1,1 +1,130 @@
-<h1>hai</h1>
+<%- include("../partials/userHeader.ejs") %>
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 300px">
+            <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">My Cart</h4>
+            <div class="d-inline-flex">
+                <p class="m-0 text-white"><a class="text-white" href="">Home</a></p>
+                <p class="m-0 text-white px-2">/</p>
+                <p class="m-0 text-white">My Cart</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+    <% if(products.length==0){ %>
+        <div class="text-center">
+          
+          <img src="/public/user/img/empty-cart.gif" alt="empty-cart" style="height: 300px;" ></a>
+          <h4>Your cart is empty !</h4><br><a href="/home"><button class="btn btn-secondary ">Shop Now</button></a>
+        </div>
+
+        <% }else{ %>
+
+<div class="tab-content">
+    <div id="class-all" class="container tab-pane p-0 active">
+        <div class="table-responsive">
+            <table class="table table-bordered table-lg m-0">
+                <thead class="bg-secondary text-white text-center">
+                    <tr class="table_head">
+                        <th class="column-1">Product</th>
+                        <th class="column-2">Price</th>
+                        <th class="column-2">Quantity</th>
+                        <th class="column-4">Total</th>
+                       
+                    </tr>
+                </thead>
+                <tbody class="align-items-center" id="productCard">
+                    <% products.forEach(function(x){ %>
+                    <tr> 
+                        <td style="width: 10cm;"><img src="/<%= x.productId.image %>"  alt="IMG" style="width: 70px; height: 70px;">&nbsp;&nbsp;<%= x.productId.name %></td>
+                        <td style="width: 3cm;"> <i class="fa fa-inr"></i> <%= x.productId.price %></td>
+                        <td style="width: 3cm;"><div class="wrap-num-product flex-w m-l-auto m-r-0">
+                        <% if( x ?.quantity === 1 ){ %>
+                                                <button disabled class="btn btn-sm" type="button" id="decbutton" ></button>&nbsp;
+
+                                                <%}else{%>
+                                                  <button onclick="decreasePrice('<%= x?.productId._id %>')" class="btn btn-sm" type="button" id="decbutton" style="color: rgb(19, 16, 16);"><i class="fa fa-minus"></i></button>&nbsp;
+                                                  <%}%>
+
+                                                <input id="sst2" class="input-responsive" type="number" name="quantity" value="<%= x.quantity %>" style="width: 1cm ;text-align: center;">
+
+                                            
+                                                    
+                                                  <button onclick="increasePrice('<%= x?.productId._id %>')" class="btn btn-sm" type="button" style="color: rgb(19, 16, 16);"><i class=" fa fa-plus" style="color: black;"></i></a>
+                                                    </div>
+                                                    
+                                                </td>
+                               
+                                                
+                         <td style="width: 3cm;"> <i class="fa fa-inr"></i> <%= x.quantity * x.productId.price %></td>
+                         <td style="width: 1cm; border-color: white; align-content: center;"><a href="/removeCart/<%= x.productId._id %>/<%=x.total%>"> <i class="fa fa-close" style="color: rgb(158, 157, 157);"></i></a></td>
+
+                   
+                    </tr>
+                    
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="row justify-content-center">
+    <div class=" mt-5  align-items-center">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body ">
+          <h5 class="card-title text-center">Sub Total :&nbsp; <i class="fa fa-inr"></i> <%=cartTotal%></h5><hr>
+          
+          <h6 class="card-subtitle mb-2 text-muted text-center">Shipping: <i class="fa fa-inr"></i> 0.00</h6>
+          
+        </div>
+        <p class="text-center">
+          <a href="/checkout" class="btn btn-primary py-3 px-4"
+            >Proceed to Checkout</a
+          >
+        </p>
+      </div>
+   
+    </div>
+  </div>
+</div>
+<% } %>
+<script>
+
+  //quantity decrement
+  function decreasePrice(productId) {
+  $.ajax({
+    url: "/quantitydec/" + productId ,
+    method: "post",
+    success: (response) => {
+      if (response) {
+        $("#productCard").load(location.href + " #productCard>*", "");
+      } else {
+        swalWithBootstrapButtons.fire("Error", "Something went wrong", "error");
+      }
+    },
+  });
+}
+
+//quantity increment
+function increasePrice(productId) {
+  $.ajax({
+    url: "/quantityinc/" + productId ,
+    method: "post",
+    success: (response) => {
+      if (response) {
+        $("#productCard").load(location.href + " #productCard>*", "");
+      } else {
+        swalWithBootstrapButtons.fire("Error", "Something went wrong", "error");
+      }
+    },
+  });
+}
+
+</script>
+
+
+    
+  <%- include("../partials/userFooter.ejs") %>

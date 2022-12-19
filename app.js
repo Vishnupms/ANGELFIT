@@ -12,10 +12,10 @@ const userRouter = require('./routes/user/user')
 
 app.use(cookieParser());
 
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 const db = require("./config/connection")
-const ejs = require('ejs');
-const { log } = require('console');
+// const ejs = require('ejs');
+// const { log } = require('console');
 
 
 
