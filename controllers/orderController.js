@@ -3,7 +3,7 @@ const cartModel = require("../models/user/cartModel")
 const orderModel = require("../models/user/orderModel")
 const Razorpay = require("razorpay")
 const moment = require("moment")
-const { log } = require("console")
+
 
 var instance = new Razorpay({
   key_id: "rzp_test_tf5Cb2ciSL0AeO",
@@ -31,7 +31,7 @@ module.exports = {
         let length = address ? address.length: 0
         let index = req.body.index ? req.body.index : length -1;
         
-        res.render("user/checkout",{cartTotal,count,cartItems,address,index,v4:true})
+        res.render("user/checkout",{cartTotal,count,cartItems,address,index,login:true})
        }
        else{
         res.redirect("/cart")
@@ -92,7 +92,8 @@ module.exports = {
     },
 verifyPayment:async(req,res)=>{
   try{
-  userId=req.session.user._id;
+  let user = req.session.user;
+  let userId = user._id;  
   let cart = await cartModel.findOne({userId})
   let products = cart.products
   let total = cart.cartTotal
@@ -194,7 +195,7 @@ orders: async (req, res) => {
     console.log(orders);
     if(orders){
       res.render("user/orders", { 
-       
+       login:true,
         moment,
         orders,
         index: 1,
@@ -202,7 +203,7 @@ orders: async (req, res) => {
         
       });
     }else{
-      res.render("user/orders",{ orders:[]});
+      res.render("user/orders",{ orders:[],login:true});
     }
 
 },

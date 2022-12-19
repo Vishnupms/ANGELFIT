@@ -35,7 +35,7 @@
                     </tr>
                 </thead>
                 <tbody class="align-items-center">
-                    <% list.map(function(x){ %>
+                    <% list.forEach(function(x){ %>
                     <tr>
                         <td style="width: 1cm; border-color: white; align-content: center;"><button onclick="removeWishList('<%= x._id %>','<%= x.name %>')" style="border: 0;"> <i class="fa fa-close" style="color: rgb(158, 157, 157);"></i> </button></td>
                         <td ><img src="/<%= x.image %>"  alt="IMG" style="width: 70px; height: 70px;">&nbsp;&nbsp;<%= x.name %></td>

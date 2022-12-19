@@ -21,9 +21,9 @@ module.exports = {
       
 
 
-      res.render("user/cart", {products,cartTotal,v4:true});
+      res.render("user/cart", {products,cartTotal,login:true});
     } else {
-      res.render("user/cart", {products: [],v4});
+      res.render("user/cart", {products: [],login:true});
     }
   }
   catch{
@@ -38,7 +38,7 @@ module.exports = {
         let productId = req.params.id
         let product = await productModel.findById({_id : productId})
         let quantity = req.body.quantity ? req.body.quantity : 1
-        total = product.price * parseInt(quantity); 
+       let total = product.price * parseInt(quantity); 
   
         let cart = await cartModel.findOne({userId:userId})
   
@@ -164,7 +164,7 @@ module.exports = {
             if (confirmCode) {
               const existOffer = await cartModel.findOne({userId:userId})
               if (!existOffer.offer.couponId){
-              discountCoupen = Math.round(cartTotal * confirmCode.discount/ 100) 
+              let discountCoupen = Math.round(cartTotal * confirmCode.discount/ 100) 
               console.log(discountCoupen);
               const cart = await cartModel.findOneAndUpdate(
                 { userId: userId },

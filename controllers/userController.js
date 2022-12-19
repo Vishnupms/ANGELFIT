@@ -7,7 +7,7 @@ const productModel = require("../models/admin/productModel");
 const addressModel = require("../models/user/addressModel");
 const bannerModel = require("../models/admin/bannerModel")
 const categoryModel = require("../models/admin/categoryModel")
-let v4;
+
 
 var otp = Math.random();
 otp = otp * 1000000;
@@ -38,20 +38,20 @@ module.exports = {
   userHome: async (req, res) => {
     try{
     const cate = req.query.category
-
+      const user= req.session.user;
     let category = await categoryModel.find({})
     let allProducts = await productModel.find()
-    if(cate){
+    if(cate && user){
       let products = await productModel.find({category:cate});
       
       
       let banner = await bannerModel.find({})
-      res.render("user/home", {category,allProducts,products, banner,v4:true});
+      res.render("user/home", {category,allProducts,products, banner,login:true});
     }else{
       let products = await productModel.find({}).limit(9)
       let category = await categoryModel.find({})
       let banner = await bannerModel.find({})
-      res.render("user/home", {category,allProducts,products, banner,v4:true});
+      res.render("user/home", {category,allProducts,products, banner,login:true});
     }
   }
   catch{
@@ -62,7 +62,7 @@ module.exports = {
   landing:async(req,res)=>{
     try{
     let products = await productModel.find().limit(9)
-    res.render("user/landing-page",{products,v4:false})
+    res.render("user/landing-page",{products,login:false})
   }
   catch{
     res.render("error")
@@ -82,17 +82,17 @@ module.exports = {
     if(cate){
       let products = await productModel.find({category:cate}).skip((page - 1) * items_per_page).limit(items_per_page)
     
-      res.render("user/shop", {category,products,v4:true,page,
+      res.render("user/shop", {category,products,page,
         hasNextPage: items_per_page * page < totalproducts,
         hasPreviousPage: page > 1,
-        PreviousPage: page - 1,totalproducts,});
+        PreviousPage: page - 1,totalproducts,login:true});
     }else{
       let products = await productModel.find({}).skip((page - 1) * items_per_page).limit(items_per_page)
       // let category = await categoryModel.find({})
-      res.render("user/shop", {category,products,v4:true, page,
+      res.render("user/shop", {category,products, page,
         hasNextPage: items_per_page * page < totalproducts,
         hasPreviousPage: page > 1,
-        PreviousPage: page - 1,totalproducts,});
+        PreviousPage: page - 1,totalproducts,login:true});
     }
   }
   catch{
@@ -283,7 +283,7 @@ module.exports = {
       try{
       const id = req.params.id;
       const singleProduct = await productModel.findById({_id: id});
-      res.render("user/landingproduct", { singleProduct, v4:false });
+      res.render("user/landingproduct", { singleProduct });
     }
     catch{
       res.render("error")
@@ -296,7 +296,7 @@ module.exports = {
     try{
     const id = req.params.id;
     const singleProduct = await productModel.findById({_id: id});
-    res.render("user/product-details", { singleProduct, v4:true });
+    res.render("user/product-details", { singleProduct,login:true });
   }
   catch{
     res.render("error")
@@ -308,20 +308,12 @@ module.exports = {
     try{
   let user = req.session.user;
   let userId = user._id;
-  return new Promise(async(resolve,reject)=>{
-    let list = await wishlistModel.findOne({userId:userId}).populate("productId")
+    await wishlistModel.findOne({userId:userId}).populate("productId")
     .then((list)=>{
-      if(list){
-        resolve(list.productId)
-      }else{
-        resolve();
-      }
-    })
-  }).then((list)=>{
     if(list){
-      res.render("user/wishlist",{login:true, list, v4:true})
+      res.render("user/wishlist",{login:true, list:list.productId})
     }else{
-      res.render("user/wishlist",{login:true,list: [],v4:true})
+      res.render("user/wishlist",{login:true,list: []})
     }
   })
 }
@@ -448,7 +440,7 @@ addtoWishList:async(req,res)=>{
         else {
           address = []
         }
-        res.render("user/profile" , {address,Index:1 ,user,v4:true})
+        res.render("user/profile" , {address,Index:1 ,user,login:true})
       }
       catch{
         res.render("error")
@@ -502,7 +494,7 @@ addtoWishList:async(req,res)=>{
           let addressId = req.params.id
           
 
-          let address = await addressModel.findOneAndUpdate(
+          await addressModel.findOneAndUpdate(
             {userId:userId},
             {$pull:{ address:{_id: addressId}}},
 
