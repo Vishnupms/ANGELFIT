@@ -35,7 +35,7 @@
                     </tr>
                 </thead>
                 <tbody class="align-items-center" id="productCard">
-                    <% products.forEach(function(x){ %>
+                    <% products.forEach((x)=>{ %>
                     <tr> 
                         <td style="width: 10cm;"><img src="/<%= x.productId.image %>"  alt="IMG" style="width: 70px; height: 70px;">&nbsp;&nbsp;<%= x.productId.name %></td>
                         <td style="width: 3cm;"> <i class="fa fa-inr"></i> <%= x.productId.price %></td>
