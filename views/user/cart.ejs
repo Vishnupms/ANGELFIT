@@ -45,7 +45,22 @@
                     </td>
                     <td style="width: 3cm;">
                       <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                        
+                        <% if( x.quantity===1 ){ %>
+                          <button disabled class="btn btn-sm" type="button" id="decbutton"></button>&nbsp;
+
+                          <%}else{%>
+                            <button onclick="decreasePrice('<%= x?.productId._id %>')" class="btn btn-sm" type="button"
+                              id="decbutton" style="color: rgb(19, 16, 16);"><i class="fa fa-minus"></i></button>&nbsp;
+                            <%}%>
+
+                              <input id="sst2" class="input-responsive" type="number" name="quantity"
+                                value="<%= x.quantity %>" style="width: 1cm ;text-align: center;">
+
+
+
+                              <button onclick="increasePrice('<%= x?.productId._id %>')" class="btn btn-sm"
+                                type="button" style="color: rgb(19, 16, 16);"><i class=" fa fa-plus"
+                                  style="color: black;"></i></a>
                       </div>
 
                     </td>
