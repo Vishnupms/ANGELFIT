@@ -93,35 +93,35 @@
 <% } %>
 <script>
 
-//   //quantity decrement
-//   function decreasePrice(productId) {
-//   $.ajax({
-//     url: "/quantitydec/" + productId ,
-//     method: "post",
-//     success: (response) => {
-//       if (response) {
-//         $("#productCard").load(location.href + " #productCard>*", "");
-//       } else {
-//         swalWithBootstrapButtons.fire("Error", "Something went wrong", "error");
-//       }
-//     },
-//   });
-// }
+  //quantity decrement
+  function decreasePrice(productId) {
+  $.ajax({
+    url: "/quantitydec/" + productId ,
+    method: "post",
+    success: (response) => {
+      if (response) {
+        $("#productCard").load(location.href + " #productCard>*", "");
+      } else {
+        swalWithBootstrapButtons.fire("Error", "Something went wrong", "error");
+      }
+    },
+  });
+}
 
-// //quantity increment
-// function increasePrice(productId) {
-//   $.ajax({
-//     url: "/quantityinc/" + productId ,
-//     method: "post",
-//     success: (response) => {
-//       if (response) {
-//         $("#productCard").load(location.href + " #productCard>*", "");
-//       } else {
-//         swalWithBootstrapButtons.fire("Error", "Something went wrong", "error");
-//       }
-//     },
-//   });
-// }
+//quantity increment
+function increasePrice(productId) {
+  $.ajax({
+    url: "/quantityinc/" + productId ,
+    method: "post",
+    success: (response) => {
+      if (response) {
+        $("#productCard").load(location.href + " #productCard>*", "");
+      } else {
+        swalWithBootstrapButtons.fire("Error", "Something went wrong", "error");
+      }
+    },
+  });
+}
 
 </script>
 
