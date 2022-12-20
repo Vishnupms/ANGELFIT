@@ -132,7 +132,7 @@ module.exports = {
     let product = await productModel.findById(productId);
     let price = req.params.price;
     let quantity = req.body.quantity;
-    let cart = await cartModel
+    let cart = await cartModel  
       .findOneAndUpdate(
         { userId: userId, "products.productId": productId },
 
