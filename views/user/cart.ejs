@@ -12,7 +12,76 @@
     </div>
   </div>
   <!-- Page Header End -->
-  
+  <% if(products.length==0){ %>
+    <div class="text-center">
+
+      <img src="/public/user/img/empty-cart.gif" alt="empty-cart" style="height: 300px;"></a>
+      <h4>Your cart is empty !</h4><br><a href="/home"><button class="btn btn-secondary ">Shop Now</button></a>
+    </div>
+
+    <% }else{ %>
+
+      <div class="tab-content">
+        <div id="class-all" class="container tab-pane p-0 active">
+          <div class="table-responsive">
+            <table class="table table-bordered table-lg m-0">
+              <thead class="bg-secondary text-white text-center">
+                <tr class="table_head">
+                  <th class="column-1">Product</th>
+                  <th class="column-2">Price</th>
+                  <th class="column-2">Quantity</th>
+                  <th class="column-4">Total</th>
+
+                </tr>
+              </thead>
+              <tbody class="align-items-center" id="productCard">
+                <% products.forEach((x)=>{ %>
+                  <tr>
+                    <td style="width: 10cm;"><img src="/<%= x.productId.image %>" alt="IMG"
+                        style="width: 70px; height: 70px;">&nbsp;&nbsp;<%= x.productId.name %>
+                    </td>
+                    <td style="width: 3cm;"> <i class="fa fa-inr"></i>
+                      <%= x.productId.price %>
+                    </td>
+                    <td style="width: 3cm;">
+                      <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                        <% if( x?.quantity===1 ){ %>
+                          <button disabled class="btn btn-sm" type="button" id="decbutton"></button>&nbsp;
+
+                          <%}else{%>
+                            <button onclick="decreasePrice('<%= x?.productId._id %>')" class="btn btn-sm" type="button"
+                              id="decbutton" style="color: rgb(19, 16, 16);"><i class="fa fa-minus"></i></button>&nbsp;
+                            <%}%>
+
+                              <input id="sst2" class="input-responsive" type="number" name="quantity"
+                                value="<%= x.quantity %>" style="width: 1cm ;text-align: center;">
+
+
+
+                              <button onclick="increasePrice('<%= x?.productId._id %>')" class="btn btn-sm"
+                                type="button" style="color: rgb(19, 16, 16);"><i class=" fa fa-plus"
+                                  style="color: black;"></i></a>
+                      </div>
+
+                    </td>
+
+
+                    <td style="width: 3cm;"> <i class="fa fa-inr"></i>
+                      <%= x.quantity * x.productId.price %>
+                    </td>
+                    <td style="width: 1cm; border-color: white; align-content: center;"><a
+                        href="/removeCart/<%= x.productId._id %>/<%=x.total%>"> <i class="fa fa-close"
+                          style="color: rgb(158, 157, 157);"></i></a></td>
+
+
+                  </tr>
+
+                  <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
 
       <div class="row justify-content-center">
